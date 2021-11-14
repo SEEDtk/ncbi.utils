@@ -27,11 +27,6 @@
       <version>5.5.2</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.theseed</groupId>
-      <artifactId>shared</artifactId>
-      <version>1.0.0</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/args4j/args4j -->
     <dependency>
         <groupId>args4j</groupId>
@@ -58,6 +53,21 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>1.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>fluent-hc</artifactId>
+      <version>4.5.13</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.theseed</groupId>
+    	<artifactId>p3api</artifactId>
+    	<version>0.0.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.theseed</groupId>
+    	<artifactId>shared</artifactId>
+    	<version>1.0.0</version>
     </dependency>
   </dependencies>
 </project>
