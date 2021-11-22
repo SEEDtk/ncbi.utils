@@ -13,6 +13,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.theseed.ncbi.XmlException;
 import org.theseed.ncbi.XmlUtils;
+import org.theseed.utils.ParseFailureException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -23,7 +24,7 @@ import org.w3c.dom.Element;
 public class ReportUtilitiesTest {
 
     @Test
-    public void testReportHelpers() throws IOException, XmlException {
+    public void testReportHelpers() throws IOException, XmlException, ParseFailureException {
         NcbiTableReporter reporter = NcbiTableReporter.Type.SAMPLE.create(null);
         Document doc = XmlUtils.readXmlFile(new File("data", "experiments.xml"));
         Element experiment = XmlUtils.getFirstByTagName(doc.getDocumentElement(), "EXPERIMENT_PACKAGE");

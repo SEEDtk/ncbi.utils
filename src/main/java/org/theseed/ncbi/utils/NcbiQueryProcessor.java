@@ -45,7 +45,9 @@ import org.theseed.utils.ParseFailureException;
  * -o	report output file, if not STDOUT
  * -d	date code for type of date in "--since" (default PDAT)
  * -b	number of records for each query batch
+ * -t	target table for RAW report
  *
+ * --limit		maximum number of records to return (default is all of them)
  * --since		minimum date for results (default is to return all results)
  * --sinceFile	name of a file to be used to track dates.  If the file exists, it will contain
  * 				the date type and date for date-filtering.  If it does not, all results will
@@ -76,6 +78,10 @@ public class NcbiQueryProcessor extends BaseNcbiProcessor  {
     @Option(name = "--dateType", aliases = { "-d" }, metaVar = "mdat", usage = "type of date for recent-record limit")
     private String dateType;
 
+    /** maximum number of records to return */
+    @Option(name = "--limit", metaVar = "1000", usage = "maximum number of records to return")
+    private int limit;
+
     /** field name / value pairs */
     @Argument(index = 1, metaVar = "fieldName1 fieldValue1 fieldName2 fieldValue2 ...",
             usage = "name and value for each filtering field")
@@ -86,6 +92,7 @@ public class NcbiQueryProcessor extends BaseNcbiProcessor  {
         this.minDateString = null;
         this.dateType = "pdat";
         this.filters = null;
+        this.limit = Integer.MAX_VALUE;
     }
 
     @Override
@@ -99,6 +106,10 @@ public class NcbiQueryProcessor extends BaseNcbiProcessor  {
             if (filters.size() % 2 != 0)
                 throw new ParseFailureException("Filtering parameters must be evenly matched:  name value name value...");
             Set<String> validNames = this.getFieldNames();
+            // Verify the return limit.
+            if (this.limit <= 0)
+                throw new ParseFailureException("Record limit must be at least 1.");
+            this.query.limit(this.limit);
             // Set up the filters.
             for (int i = 0; i < filters.size(); i += 2) {
                 String name = StringUtils.replaceChars(filters.get(i), ' ', '+');
@@ -142,7 +153,7 @@ public class NcbiQueryProcessor extends BaseNcbiProcessor  {
     }
 
     @Override
-    protected boolean processSpecial(PrintWriter writer) throws XmlException {
+    protected boolean processSpecial(PrintWriter writer) throws XmlException, IOException {
         boolean retVal = false;
         // If there are no filters, print out a field list.
         if (this.filters == null) {

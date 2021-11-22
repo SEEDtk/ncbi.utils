@@ -6,8 +6,11 @@ package org.theseed.ncbi.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.Option;
 import org.theseed.io.TabbedLineReader;
 import org.theseed.ncbi.NcbiListQuery;
@@ -20,7 +23,8 @@ import org.theseed.utils.ParseFailureException;
  * those IDs.  The type of report determines the table that the records come from.
  *
  * The positional parameter is the name of the report.  The IDs should be in a tab-delimited
- * file, with headers.  The default location is the first column.
+ * file, with headers.  The default location is the first column.  Blank column values will
+ * be skipped.
  *
  * The following command-line options are supported.
  *
@@ -30,6 +34,7 @@ import org.theseed.utils.ParseFailureException;
  * -o	output file for report (if not STDOUT)
  * -c	index (1-based) or name of input column containing IDs
  * -b	batch size for requests; the default is 200
+ * -t	target table for RAW report
  *
  * --key	name of the ID field; the default is "accession"
  *
@@ -40,9 +45,7 @@ public class NcbiListProcessor extends BaseNcbiProcessor {
 
     // FIELDS
     /** input stream */
-    private TabbedLineReader inStream;
-    /** input column index */
-    private int keyIdx;
+    private Iterator<String> keyIter;
 
     // COMMAND-LINE OPTIONS
 
@@ -68,15 +71,30 @@ public class NcbiListProcessor extends BaseNcbiProcessor {
     @Override
     protected void validateNcbiProcessParms() throws IOException, ParseFailureException, XmlException {
         // Set up the input file.
-        if (this.inFile == null) {
-            log.info("Keys will be read from the standard input.");
-            this.inStream = new TabbedLineReader(System.in);
-        } else {
-            log.info("Keys will be read from {}.", this.inFile);
-            this.inStream = new TabbedLineReader(this.inFile);
+        TabbedLineReader inStream = null;
+        try {
+            if (this.inFile == null) {
+                log.info("Keys will be read from the standard input.");
+                inStream = new TabbedLineReader(System.in);
+            } else {
+                log.info("Keys will be read from {}.", this.inFile);
+                inStream = new TabbedLineReader(this.inFile);
+            }
+            // Get the key column values.
+            Set<String> keys = new TreeSet<String>();
+            int keyIdx = inStream.findField(this.colName);
+            for (TabbedLineReader.Line line : inStream) {
+                String key = line.get(keyIdx);
+                if (! StringUtils.isBlank(key))
+                    keys.add(key);
+            }
+            // Create the iterator through the keys.
+            this.keyIter = keys.iterator();
+        } finally {
+            // Insure the input stream is closed.
+            if (inStream != null)
+                inStream.close();
         }
-        // Get the key column index.
-        this.keyIdx = this.inStream.findField(this.colName);
         // Verify the key field name.
         Set<String> fieldNames = this.getFieldNames();
         if (! fieldNames.contains(this.filterName))
@@ -90,22 +108,20 @@ public class NcbiListProcessor extends BaseNcbiProcessor {
 
     @Override
     protected void postProcess() {
-        this.inStream.close();
     }
 
     @Override
     public boolean hasNext() {
         // If there are more IDs, there are more queries.
-        return this.inStream.hasNext();
+        return this.keyIter.hasNext();
     }
 
     @Override
     public NcbiQuery next() {
         // Fill a query until we are ready.
         NcbiListQuery retVal = new NcbiListQuery(this.getTable(), this.filterName);
-        while (this.inStream.hasNext() && retVal.size() < this.getBatchSize()) {
-            TabbedLineReader.Line line = this.inStream.next();
-            String value = line.get(this.keyIdx);
+        while (this.keyIter.hasNext() && retVal.size() < this.getBatchSize()) {
+            String value = this.keyIter.next();
             retVal.addId(value);
         }
         return retVal;

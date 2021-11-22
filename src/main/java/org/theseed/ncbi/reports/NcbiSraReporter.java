@@ -29,7 +29,6 @@ public class NcbiSraReporter extends NcbiTableReporter {
     // FIELDS
     /** logging facility */
     protected static Logger log = LoggerFactory.getLogger(NcbiSraReporter.class);
-
     /** headings */
     private static String[] HEADINGS = new String[] {
             "run_id", "experiment", "organism", "tax_id", "strategy", "source", "selector",

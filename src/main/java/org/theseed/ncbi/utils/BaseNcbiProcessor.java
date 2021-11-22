@@ -5,6 +5,7 @@ package org.theseed.ncbi.utils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -27,21 +28,48 @@ import org.w3c.dom.Element;
  * do pre- and post-processing and build the query.  After that, the query is run and the
  * records run through the standard reporting process.
  *
+ * The first positional parameter-- report type-- is supported at the base-class level, as
+ * well as the following command-line options.
+ *
+ * -b	batch size for queries
+ * -p	regex pattern for abstract filtering (multiple allowed)
+ * -t	target table (for raw reporter only)
+ *
+ * --mode	minimum number of filters that must match in an abstract for a record to be output
+ *
  * @author Bruce Parrello
  *
  */
 public abstract class BaseNcbiProcessor extends BaseReportProcessor
         implements NcbiTableReporter.IParms, Iterator<NcbiQuery> {
 
+    // FIELDS
     /** logging facility */
     protected static Logger log = LoggerFactory.getLogger(NcbiQueryProcessor.class);
     /** NCBI connection */
     private NcbiConnection ncbi;
     /** reporting object */
     private NcbiTableReporter reporter;
+
+    // COMMAND-LINE OPTIONS
+
     /** query batch size */
     @Option(name = "--batchSize", aliases = { "-b" }, metaVar = "100", usage = "number of records per query batch")
     private int batchSize;
+
+    /** keyword patterns for abstract filtering */
+    @Option(name = "--pattern", aliases = { "-p" }, metaVar = "rna\\s*seq",
+            usage = "regex pattern for filtering abstracts")
+    private List<String> patterns;
+
+    /** keyword pattern mode */
+    @Option(name = "--mode", usage = "minimum number of keywords required to satisfy filter (0 == all)")
+    private int filterMode;
+
+    /** target table for raw report */
+    @Option(name = "--table", aliases = { "-t" }, usage = "target table for RAW report")
+    private NcbiTable targetTable;
+
     /** report type */
     @Argument(index = 0, metaVar = "reportType", usage = "type of report to write", required = true)
     private NcbiTableReporter.Type reportType;
@@ -51,6 +79,8 @@ public abstract class BaseNcbiProcessor extends BaseReportProcessor
     protected final void setReporterDefaults() {
         this.setNcbiProcessDefaults();
         this.batchSize = 200;
+        this.patterns = new ArrayList<String>();
+        this.filterMode = 0;
     }
 
     @Override
@@ -123,8 +153,9 @@ public abstract class BaseNcbiProcessor extends BaseReportProcessor
      * @return TRUE if the report should be bypassed, else FALSE
      *
      * @throws XmlException
+     * @throws IOException
      */
-    protected abstract boolean processSpecial(PrintWriter writer) throws XmlException;
+    protected abstract boolean processSpecial(PrintWriter writer) throws XmlException, IOException;
 
     /**
      * Perform any necessary post-processing.
@@ -142,8 +173,9 @@ public abstract class BaseNcbiProcessor extends BaseReportProcessor
      * @return the list of filtering fields in the current report's table
      *
      * @throws XmlException
+     * @throws IOException
      */
-    protected List<NcbiConnection.Field> getFieldList() throws XmlException {
+    protected List<NcbiConnection.Field> getFieldList() throws XmlException, IOException {
         return this.ncbi.getFieldList(this.getTable());
     }
 
@@ -153,8 +185,9 @@ public abstract class BaseNcbiProcessor extends BaseReportProcessor
      * @return the set of valid field names for validation
      *
      * @throws XmlException
+     * @throws IOException
      */
-    protected Set<String> getFieldNames() throws XmlException {
+    protected Set<String> getFieldNames() throws XmlException, IOException {
         return this.ncbi.getFieldNames(this.getTable());
     }
 
@@ -163,6 +196,30 @@ public abstract class BaseNcbiProcessor extends BaseReportProcessor
      */
     protected int getBatchSize() {
         return this.batchSize;
+    }
+
+    /**
+     * @return the list of abstract-filtering patterns
+     */
+    @Override
+    public List<String> getPatterns() {
+        return this.patterns;
+    }
+
+    /**
+     * @return the minimum number of filters that must match for abstract-filtering
+     */
+    @Override
+    public int getFilterMode() {
+        return this.filterMode;
+    }
+
+    /**
+     * @return the target table for a multi-table report
+     */
+    @Override
+    public NcbiTable getTargetTable() {
+        return this.targetTable;
     }
 
 }

@@ -3,17 +3,25 @@
  */
 package org.theseed.ncbi.reports;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.theseed.ncbi.NcbiTable;
 import org.theseed.ncbi.XmlUtils;
+import org.theseed.utils.ParseFailureException;
 import org.w3c.dom.Element;
 
 /**
- * This is the base class for all NCBI table reports.
+ * This is the base class for all NCBI table reports.  It includes support for
+ * methods that are shared between reports, though not all of these are used by
+ * all reports.
  *
  * @author Bruce Parrello
  *
@@ -25,11 +33,32 @@ public abstract class NcbiTableReporter {
     private PrintWriter writer;
     /** target NCBI table */
     private NcbiTable table;
+    /** list of keywords to find, coded as regular expressions */
+    private List<Pattern> keywords;
+    /** minimum number of keyword matches required */
+    private int minKeywords;
+    /** pattern for cleaning HTML strings */
+    private static final Pattern HTML_TAG = Pattern.compile("\\<.*?\\>");
 
     /**
      * This interface defines the special parameters that must be provided by the client command.
      */
     public static interface IParms {
+
+        /**
+         * @return the list of regex patterns for abstract filtering
+         */
+        public List<String> getPatterns();
+
+        /**
+         * @return the minimum number of matches for abstract filtering (0 == all)
+         */
+        public int getFilterMode();
+
+        /**
+         * @return the target table for a multi-table report
+         */
+        NcbiTable getTargetTable();
 
     }
 
@@ -44,14 +73,42 @@ public abstract class NcbiTableReporter {
                 return new NcbiSraReporter(processor);
             }
 
+        },
+        RAW {
+
+            @Override
+            public NcbiTableReporter create(IParms processor) throws IOException {
+                return new NcbiRawReporter(processor);
+            }
+
+        },
+        PUBMED {
+
+            @Override
+            public NcbiTableReporter create(IParms processor) throws ParseFailureException {
+                return new NcbiPubmedReporter(processor);
+            }
+
+        },
+        PROJECTS {
+
+            @Override
+            public NcbiTableReporter create(IParms processor) throws ParseFailureException {
+                return new NcbiProjectReporter(processor);
+            }
+
         };
 
         /**
          * @return a reporting object of this type
          *
          * @param processor		controlling command processor
+         *
+         * @throws ParseFailureException
+         * @throws IOException
          */
-        public abstract NcbiTableReporter create(IParms processor);
+        public abstract NcbiTableReporter create(IParms processor)
+                throws ParseFailureException, IOException;
     }
 
     /**
@@ -64,13 +121,44 @@ public abstract class NcbiTableReporter {
     }
 
     /**
+     * Initialize the filtering-keyword facility.
+     *
+     * @param processor		controlling command processor
+     *
+     * @throws ParseFailureException
+     */
+    protected void setupKeywordFiltering(IParms processor) throws ParseFailureException {
+        // Create the list of patterns from the pattern strings.
+        List<String> regexStrings = processor.getPatterns();
+        this.keywords = new ArrayList<Pattern>(regexStrings.size());
+        for (String regexString : regexStrings) {
+            try {
+                Pattern pattern = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
+                this.keywords.add(pattern);
+            } catch (PatternSyntaxException e) {
+                throw new ParseFailureException("Error in abstract-filtering pattern: " + e.getMessage());
+            }
+        }
+        // Compute the minimum-match number.
+        this.minKeywords = processor.getFilterMode();
+        if (this.minKeywords == 0)
+            this.minKeywords = this.keywords.size();
+        if (this.minKeywords < 0)
+            throw new ParseFailureException("Invalid filter mode:  cannot be negative");
+        else if (this.minKeywords > this.keywords.size())
+            throw new ParseFailureException("Invalid filter mode:  cannot be greater than number of patterns.");
+    }
+
+    /**
      * Initialize the report and save the output writer.
      *
      * @param writer		output print writer
      */
     public void openReport(PrintWriter writer) {
         this.writer = writer;
-        this.writer.println(this.getHeader());
+        String header = this.getHeader();
+        if (header != null)
+            this.writer.println(this.getHeader());
     }
 
     /**
@@ -81,7 +169,7 @@ public abstract class NcbiTableReporter {
     }
 
     /**
-     * @return the header line for this report
+     * @return the header line for this report. or NULL if there is no header
      */
     protected abstract String getHeader();
 
@@ -119,8 +207,17 @@ public abstract class NcbiTableReporter {
      *
      * @param outLine		the output array
      */
-    protected void writeLine(String[] outLine) {
+    protected void writeLine(String... outLine) {
         this.writer.println(StringUtils.join(outLine, '\t'));
+    }
+
+    /**
+     * Write a line of raw output.  A new-line is appended.
+     *
+     * @param outString		the output string
+     */
+    protected void writeString(String outString) {
+        this.writer.println(outString);
     }
 
     /**
@@ -217,5 +314,36 @@ public abstract class NcbiTableReporter {
             outputMap.put(helper.getValue(), value);
         }
     }
+
+    /**
+     * Filter an abstract to insure it is acceptable.
+     *
+     * @param abstractText		abstract text to filter
+     *
+     * @return TRUE if we should keep the current record, else FALSE
+     */
+    protected boolean checkAbstract(String abstractText) {
+        // Denote we are keeping this record.
+        boolean retVal = true;
+        // If we have filtering, do the filter search.
+        if (this.minKeywords > 0) {
+            int count = (int) this.keywords.stream().filter(x -> x.matcher(abstractText).find()).count();
+            retVal = (count >= this.minKeywords);
+        }
+        return retVal;
+    }
+
+    /**
+     * Remove HTML tags from a string
+     *
+     * @param text		text to clear
+     *
+     * @return the text with the HTML tags removed
+     */
+    public static String cleanHtml(String text) {
+        String retVal = RegExUtils.removeAll(text, HTML_TAG);
+        return retVal;
+    }
+
 
 }
