@@ -90,6 +90,14 @@ public abstract class NcbiTableReporter {
             }
 
         },
+        PROJTABLE {
+
+            @Override
+            public NcbiTableReporter create(IParms processor) {
+                return new NcbiProjectTableReporter(processor);
+            }
+
+        },
         PROJECTS {
 
             @Override
