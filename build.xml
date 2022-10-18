@@ -29,7 +29,7 @@
             <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar"/>
             <fileset dir="${dir.workspace}/git/p3api/target/classes"/>
             <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/com/github/cliftonlabs/json-simple/3.1.0/json-simple-3.1.0.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/org/apache/commons/commons-text/1.8/commons-text-1.8.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/org/apache/commons/commons-text/1.10.0/commons-text-1.10.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar"/>
             <fileset dir="${dir.workspace}/git/shared/target/classes"/>
             <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/com/github/eprst/murmur3/0.3/murmur3-0.3.jar"/>
