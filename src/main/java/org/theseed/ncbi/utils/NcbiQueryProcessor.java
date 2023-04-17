@@ -30,7 +30,7 @@ import org.theseed.utils.ParseFailureException;
  * the report, and it must provide methods for printing the header and formatting the output
  * line for each record found.
  *
- * The positional parameters are the report format followed by the query criteria.  Each crtierion
+ * The positional parameters are the report format followed by the query criteria.  Each criterion
  * is specified as a field name followed by the desired field value (that is, as two positional
  * parameters).  If full field names are being used, each space must be replaced
  * by a "+", since the field names are URLEncoded.  Field values are URLEncoded automatically.
