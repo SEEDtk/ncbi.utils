@@ -8,9 +8,11 @@ import static org.hamcrest.Matchers.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.theseed.ncbi.TagNotFoundException;
 import org.theseed.ncbi.XmlException;
 import org.theseed.ncbi.XmlUtils;
 import org.theseed.utils.ParseFailureException;
@@ -71,4 +73,22 @@ public class ReportUtilitiesTest {
         assertThat(outputMap.size(), equalTo(18));
     }
 
+    @Test
+    void testPubmedHelpers() throws IOException, TagNotFoundException {
+        Document doc = XmlUtils.readXmlFile(new File("data", "pubmed.xml"));
+        Element pkg = doc.getDocumentElement();
+        assertThat(pkg, not(nullValue()));
+        List<Element> articles = XmlUtils.childrenOf(pkg);
+        Element article = articles.get(0);
+        assertThat(NcbiPubmedReporter.getDoiUrl(article), equalTo("https://dx.doi.org/10.1186/s12967-023-04492-x"));
+        assertThat(NcbiPubmedReporter.getArticleId(article, "pmc"), equalTo("PMC10541691"));
+        article = articles.get(1);
+        assertThat(NcbiPubmedReporter.getDoiUrl(article), equalTo("https://dx.doi.org/10.1146/annurev-virology-100120-011239"));
+        assertThat(NcbiPubmedReporter.getArticleId(article, "pmc"), equalTo(""));
+        article = articles.get(2);
+        assertThat(NcbiPubmedReporter.getDoiUrl(article), equalTo(""));
+        assertThat(NcbiPubmedReporter.getArticleId(article, "pmc"), equalTo("PMC10540326"));
+
+
+    }
 }
