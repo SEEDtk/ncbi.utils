@@ -46,6 +46,8 @@ public class NcbiListProcessor extends BaseNcbiProcessor {
     // FIELDS
     /** input stream */
     private Iterator<String> keyIter;
+    /** total number of keys found in input */
+    private int keyTotal;
 
     // COMMAND-LINE OPTIONS
 
@@ -88,6 +90,9 @@ public class NcbiListProcessor extends BaseNcbiProcessor {
                 if (! StringUtils.isBlank(key))
                     keys.add(key);
             }
+            // Record the size of the key request.
+            this.keyTotal = keys.size();
+            log.info("{} distinct keys found in input.", this.keyTotal);
             // Create the iterator through the keys.
             this.keyIter = keys.iterator();
         } finally {
