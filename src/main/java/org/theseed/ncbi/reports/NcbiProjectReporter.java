@@ -12,9 +12,9 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.theseed.basic.ParseFailureException;
 import org.theseed.ncbi.NcbiTable;
 import org.theseed.ncbi.XmlUtils;
-import org.theseed.utils.ParseFailureException;
 import org.w3c.dom.Element;
 
 /**

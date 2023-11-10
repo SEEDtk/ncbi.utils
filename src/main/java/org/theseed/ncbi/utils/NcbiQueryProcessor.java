@@ -14,13 +14,13 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
+import org.theseed.basic.ParseFailureException;
 import org.theseed.io.MarkerFile;
 import org.theseed.ncbi.NcbiConnection;
 import org.theseed.ncbi.NcbiFilterQuery;
 import org.theseed.ncbi.NcbiQuery;
 import org.theseed.ncbi.NcbiTable;
 import org.theseed.ncbi.XmlException;
-import org.theseed.utils.ParseFailureException;
 
 /**
  * This command retrieves a set of records from the NCBI Entrez system and returns then as

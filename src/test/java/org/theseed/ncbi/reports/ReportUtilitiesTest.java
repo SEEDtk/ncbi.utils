@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.theseed.basic.ParseFailureException;
 import org.theseed.ncbi.TagNotFoundException;
 import org.theseed.ncbi.XmlException;
 import org.theseed.ncbi.XmlUtils;
-import org.theseed.utils.ParseFailureException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

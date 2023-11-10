@@ -12,11 +12,11 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.Option;
+import org.theseed.basic.ParseFailureException;
 import org.theseed.io.TabbedLineReader;
 import org.theseed.ncbi.NcbiListQuery;
 import org.theseed.ncbi.NcbiQuery;
 import org.theseed.ncbi.XmlException;
-import org.theseed.utils.ParseFailureException;
 
 /**
  * This command reads IDs from a file and produces a report based on the ENTREZ records with

@@ -2,7 +2,7 @@ package org.theseed.ncbi.utils;
 
 import java.util.Arrays;
 
-import org.theseed.utils.BaseProcessor;
+import org.theseed.basic.BaseProcessor;
 
 /**
  * Commands for retrieving data from the ENTREZ NCBI database.
