@@ -70,5 +70,21 @@
         <artifactId>shared</artifactId>
         <version>1.0.0</version>
     </dependency>
+    <dependency>
+        <groupId>org.theseed</groupId>
+        <artifactId>core</artifactId>
+        <version>0.0.9</version>
+    </dependency>
+    <dependency>
+        <groupId>com.j2html</groupId>
+        <artifactId>j2html</artifactId>
+        <version>1.4.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+    <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>4.18.1</version>
+    </dependency>
   </dependencies>
 </project>

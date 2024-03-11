@@ -26,6 +26,9 @@ public class App
         case "list" :
             processor = new NcbiListProcessor();
             break;
+        case "papers" :
+            processor = new PaperDownloadProcessor();
+            break;
         default:
             throw new RuntimeException("Invalid command " + command);
         }
