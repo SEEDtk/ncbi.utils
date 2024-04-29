@@ -86,5 +86,10 @@
         <artifactId>selenium-java</artifactId>
         <version>4.18.1</version>
     </dependency>
+    <dependency>
+    	<groupId>org.theseed</groupId>
+    	<artifactId>basic</artifactId>
+    	<version>1.0.0</version>
+    </dependency>
   </dependencies>
 </project>
