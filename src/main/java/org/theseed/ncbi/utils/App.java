@@ -9,6 +9,7 @@ import org.theseed.basic.BaseProcessor;
  *
  * query	retrieve data from the NCBI Entrez database
  * list		list records from the NCBI Entrez database
+ * fetch	download samples from NCBI
  */
 public class App
 {
@@ -25,6 +26,9 @@ public class App
             break;
         case "list" :
             processor = new NcbiListProcessor();
+            break;
+        case "fetch" :
+            processor = new NcbiFetchProcessor();
             break;
         default:
             throw new RuntimeException("Invalid command " + command);
