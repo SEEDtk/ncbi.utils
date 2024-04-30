@@ -66,6 +66,8 @@ public class NcbiDownloader implements AutoCloseable {
     private int readCount;
     /** directory containing FASTQ-DUMP binaries */
     private static final File CMD_PATH = checkSraLib();
+    /** status summary string */
+    private String summaryString;
 
     /**
      * Construct a downloader for a list of runs.
@@ -95,6 +97,8 @@ public class NcbiDownloader implements AutoCloseable {
         this.pairCount = 0;
         this.singleCount = 0;
         this.readCount = 0;
+        // Set up the summary string.
+        this.summaryString = "Sample " + sampleId + " being initialized.";
     }
 
     /**
@@ -245,14 +249,16 @@ public class NcbiDownloader implements AutoCloseable {
      * @throws IOException
      */
     public void execute() {
+        this.summaryString = "Download of sample " + this.sampleId + " in progress.";
         log.info("Downloading sample {}.", this.sampleId);
         for (String run : this.runList) {
             this.runCount++;
             log.info("Processing run {} of {}: {}.", this.runCount, this.runList.size(), run);
             this.downloadRun(run);
         }
-        log.info("Sample {} downloaded:  {} runs, {} pairs, {} singles, {} errors.", this.sampleId, this.runCount,
-                this.pairCount, this.singleCount, this.errorCount);
+        this.summaryString = String.format("Sample %s downloaded from %d runs, %d pairs, %d singletons, and %d errors.", this.sampleId,
+                this.runCount, this.pairCount, this.singleCount, this.errorCount);
+        log.info(this.summaryString);
     }
 
     /**
@@ -344,6 +350,13 @@ public class NcbiDownloader implements AutoCloseable {
     public void writeSingleton(SeqPart read) {
         read.write(this.singleFastqStream);
         this.singleCount++;
+    }
+
+    /**
+     * @return a summary of the stats for this sample download
+     */
+    public String summaryString() {
+        return this.summaryString;
     }
 
 

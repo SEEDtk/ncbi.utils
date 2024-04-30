@@ -6,7 +6,7 @@ package org.theseed.ncbi.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -15,7 +15,9 @@ import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.basic.ParseFailureException;
+import org.theseed.io.MarkerFile;
 import org.theseed.io.TabbedLineReader;
+import org.theseed.ncbi.download.NcbiDownloader;
 import org.theseed.utils.BaseInputProcessor;
 
 /**
@@ -48,7 +50,13 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
     /** logging facility */
     protected static Logger log = LoggerFactory.getLogger(NcbiFetchProcessor.class);
     /** master sample list (sample ID -> run ID list */
-    private Map<String, List<String>> sampleMap;
+    private Map<String, String[]> sampleMap;
+    /** number of samples downloaded */
+    private int downloadCount;
+    /** number of pre-existing samples skipped */
+    private int skipCount;
+    /** number of downloads that failed */
+    private int failCount;
 
     // COMMAND-LINE OPTIONS
 
@@ -102,18 +110,65 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
             // Here we are just using the directory already there.
             log.info("Output samples will be put in {}.", this.outDir);
         }
+        // Initialize the counters.
+        this.downloadCount = 0;
+        this.failCount = 0;
+        this.skipCount = 0;
     }
 
     @Override
     protected void validateReaderInput(TabbedLineReader reader) throws IOException {
-        // TODO read input and build sample map
-
+        // Locate the two input columns.
+        int sampColIdx = reader.findField(this.sampCol);
+        int runColIdx = reader.findField(this.runCol);
+        // Create the sample hash.
+        log.info("Reading sample and run data from input.");
+        int lineCount = 0;
+        int runCount = 0;
+        this.sampleMap = new HashMap<String, String[]>();
+        for (var line : reader) {
+            lineCount++;
+            String sampleId = line.get(sampColIdx);
+            String runs = line.get(runColIdx);
+            String[] runList = runs.split(",\\S*");
+            this.sampleMap.put(sampleId, runList);
+            runCount += runList.length;
+        }
+        log.info("{} samples found in {} lines with {} total runs.", this.sampleMap.size(), lineCount, runCount);
     }
 
     @Override
     protected void runReader(TabbedLineReader reader) throws Exception {
-        // TODO code for runReader
+        // Loop through the samples, processing them one at a time.
+        sampleMap.entrySet().forEach(x -> this.processSample(x.getKey(), x.getValue()));
+        log.info("{} samples downloaded, {} failed, {} skipped.", this.downloadCount, this.failCount, this.skipCount);
+    }
 
+    /**
+     * Download a single sample to the output directory.
+     *
+     * @param sampleId		sample ID
+     * @param runList		array of run accessions
+     */
+    private void processSample(String sampleId, String[] runList) {
+        try {
+            // Compute the output directory.
+            File sampleDir = new File(this.outDir, sampleId);
+            // Compute the marker file name.  This file is created after the download is successful.
+            File markerFile = new File(sampleDir, "stats.txt");
+            if (this.missingFlag && markerFile.exists()) {
+                log.info("Skipping downloaded sample {}.", sampleId);
+                this.skipCount++;
+            } else {
+                NcbiDownloader downloader = new NcbiDownloader(sampleId, sampleDir, this.zipFlag, runList);
+                // TODO process sample
+                MarkerFile.write(markerFile, downloader.summaryString());
+                this.downloadCount++;
+            }
+        } catch (Exception e) {
+            log.error("Sample {} failed during download: {}.", sampleId, e.toString());
+            this.failCount++;
+        }
     }
 
 }
