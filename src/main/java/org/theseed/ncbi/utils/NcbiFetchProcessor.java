@@ -155,16 +155,18 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
             // Compute the output directory.
             File sampleDir = new File(this.outDir, sampleId);
             // Compute the marker file name.  This file is created after the download is successful.
-            File markerFile = new File(sampleDir, "stats.txt");
+            File markerFile = new File(sampleDir, "summary.txt");
             if (this.missingFlag && markerFile.exists()) {
                 log.info("Skipping downloaded sample {}.", sampleId);
                 this.skipCount++;
-            } else {
-                NcbiDownloader downloader = new NcbiDownloader(sampleId, sampleDir, this.zipFlag, runList);
-                // TODO process sample
-                MarkerFile.write(markerFile, downloader.summaryString());
-                this.downloadCount++;
-            }
+            } else
+                try (NcbiDownloader downloader = new NcbiDownloader(sampleId, sampleDir, this.zipFlag, runList)) {
+                    // Download the sample.
+                    downloader.execute();
+                    // Mark it complete.
+                    MarkerFile.write(markerFile, downloader.summaryString());
+                    this.downloadCount++;
+                }
         } catch (Exception e) {
             log.error("Sample {} failed during download: {}.", sampleId, e.toString());
             this.failCount++;
