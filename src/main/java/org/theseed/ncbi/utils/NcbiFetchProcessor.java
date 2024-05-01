@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 import org.kohsuke.args4j.Argument;
@@ -18,6 +20,7 @@ import org.theseed.basic.ParseFailureException;
 import org.theseed.io.MarkerFile;
 import org.theseed.io.TabbedLineReader;
 import org.theseed.ncbi.download.NcbiDownloader;
+import org.theseed.ncbi.download.ReadSample;
 import org.theseed.utils.BaseInputProcessor;
 
 /**
@@ -37,8 +40,7 @@ import org.theseed.utils.BaseInputProcessor;
  *
  * --clear		erase the output directory before processing
  * --missing	only download samples not already present
- * --sampCol	index (1-based) or name of the input column containing sample IDs
- * --runCol		index (1-based) or name of the input column containing run IDs
+ * --sampCol	index (1-based) or name of the input column containing sample and run IDs
  * --zip		GZIP the output to save space
  *
  * @author Bruce Parrello
@@ -49,8 +51,12 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
     // FIELDS
     /** logging facility */
     protected static Logger log = LoggerFactory.getLogger(NcbiFetchProcessor.class);
-    /** master sample list (sample ID -> run ID list */
-    private Map<String, String[]> sampleMap;
+    /** master sample list (sample ID -> sample descriptor */
+    private Map<String, ReadSample> sampleMap;
+    /** input list of samples */
+    private Set<String> samples;
+    /** input list of runs */
+    private Set<String> runs;
     /** number of samples downloaded */
     private int downloadCount;
     /** number of pre-existing samples skipped */
@@ -72,10 +78,6 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
     @Option(name = "--sampCol", metaVar = "sample", usage = "index (1-based) or name of sample ID input column")
     private String sampCol;
 
-    /** specified for input run list column */
-    @Option(name = "--runCol", metaVar = "run_ids", usage = "index (1-based) or name of run ID list column")
-    private String runCol;
-
     /** if specified, the output files will be compressed */
     @Option(name = "--zip", usage = "if specified, output files will be GZIPped")
     private boolean zipFlag;
@@ -89,7 +91,6 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
         this.clearFlag = false;
         this.missingFlag = false;
         this.sampCol = "sample_id";
-        this.runCol = "runs";
         this.zipFlag = false;
     }
 
@@ -118,52 +119,57 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
 
     @Override
     protected void validateReaderInput(TabbedLineReader reader) throws IOException {
-        // Locate the two input columns.
+        // Locate the input column.
         int sampColIdx = reader.findField(this.sampCol);
-        int runColIdx = reader.findField(this.runCol);
         // Create the sample hash.
+        this.sampleMap = new HashMap<String, ReadSample>();
+        // Create the run and sample sets.
         log.info("Reading sample and run data from input.");
+        this.runs = new TreeSet<String>();
+        this.samples = new TreeSet<String>();
         int lineCount = 0;
-        int runCount = 0;
-        this.sampleMap = new HashMap<String, String[]>();
         for (var line : reader) {
             lineCount++;
             String sampleId = line.get(sampColIdx);
-            String runs = line.get(runColIdx);
-            String[] runList = runs.split(",\\s*");
-            this.sampleMap.put(sampleId, runList);
-            runCount += runList.length;
+            // A run ID is XXR, a sample ID is XXS.
+            if (sampleId.length() < 4)
+                throw new IOException("\"" + sampleId + "\" is not a valid sample or run ID.");
+            if (sampleId.charAt(2) == 'R')
+                this.runs.add(sampleId);
+            else
+                this.samples.add(sampleId);
         }
-        log.info("{} samples found in {} lines with {} total runs.", this.sampleMap.size(), lineCount, runCount);
+        log.info("{} lines read.  {} samples and {} runs found.", lineCount, this.samples.size(), this.runs.size());
     }
 
     @Override
     protected void runReader(TabbedLineReader reader) throws Exception {
+        // TODO compute samples from sample set
+        // TODO compute runs from run set
         // Loop through the samples, processing them one at a time.
-        sampleMap.entrySet().forEach(x -> this.processSample(x.getKey(), x.getValue()));
+        this.sampleMap.values().forEach(x -> this.processSample(x));
         log.info("{} samples downloaded, {} failed, {} skipped.", this.downloadCount, this.failCount, this.skipCount);
     }
 
     /**
      * Download a single sample to the output directory.
      *
-     * @param sampleId		sample ID
-     * @param runList		array of run accessions
+     * @param sample		sample to download
      */
-    private void processSample(String sampleId, String[] runList) {
+    private void processSample(ReadSample sample) {
         try {
             // Compute the output directory.
-            File sampleDir = new File(this.outDir, sampleId);
+            File sampleDir = new File(this.outDir, sample.getId());
             // Compute the marker file name.  This file is created after the download is successful.
             File markerFile = new File(sampleDir, "summary.txt");
             if (this.missingFlag && markerFile.exists()) {
-                log.info("Skipping downloaded sample {}.", sampleId);
+                log.info("Skipping downloaded sample {}.", sample.getId());
                 this.skipCount++;
             } else {
                 // Insure the output directory exists.
                 if (! sampleDir.isDirectory())
                     FileUtils.forceMkdir(sampleDir);
-                try (NcbiDownloader downloader = new NcbiDownloader(sampleId, sampleDir, this.zipFlag, runList)) {
+                try (NcbiDownloader downloader = new NcbiDownloader(sample, sampleDir, this.zipFlag)) {
                     // Download the sample.
                     downloader.execute();
                     // Mark it complete.
@@ -172,7 +178,7 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
                 }
             }
         } catch (Exception e) {
-            log.error("Sample {} failed during download: {}.", sampleId, e.toString());
+            log.error("Sample {} failed during download: {}.", sample.getId(), e.toString());
             this.failCount++;
         }
     }

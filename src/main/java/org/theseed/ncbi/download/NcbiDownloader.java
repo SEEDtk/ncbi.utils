@@ -4,25 +4,18 @@
 package org.theseed.ncbi.download;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.UncheckedIOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
-import java.util.zip.GZIPOutputStream;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.io.ErrorQueue;
 import org.theseed.io.LineReader;
-import org.theseed.reports.NaturalSort;
 import org.theseed.utils.ProcessUtils;
 
 /**
@@ -44,16 +37,8 @@ public class NcbiDownloader implements AutoCloseable {
     // FIELDS
     /** logging facility */
     protected static Logger log = LoggerFactory.getLogger(NcbiDownloader.class);
-    /** list of runs to download */
-    private Set<String> runList;
-    /** left output file stream */
-    private PrintWriter leftFastqStream;
-    /** right output file stream */
-    private PrintWriter rightFastqStream;
-    /** singleton output file stream */
-    private PrintWriter singleFastqStream;
-    /** sample ID for tracing */
-    private String sampleId;
+    /** descriptor for sample to download */
+    private ReadSample sample;
     /** number of errors */
     private int errorCount;
     /** number of paired records */
@@ -70,9 +55,9 @@ public class NcbiDownloader implements AutoCloseable {
     private String summaryString;
 
     /**
-     * Construct a downloader for a list of runs.
+     * Construct a downloader for a sample
      *
-     * @param sampleId	ID to use for this set of runs
+     * @param sampleIn	descriptor of the sample to download
      * @param outDir	output directory for FASTQ files
      * @param zipped	TRUE if the output should be gzipped
      * @param runs		array of run accession IDs for the runs to download
@@ -80,17 +65,12 @@ public class NcbiDownloader implements AutoCloseable {
      * @throws IOException
      *
      */
-    public NcbiDownloader(String sampleId, File outDir, boolean zipped, String... runs) throws IOException {
-        // Save the list of runs.  We want them in more-or-less numerical order.
-        this.runList = new TreeSet<String>(new NaturalSort());
-        for (String run : runs)
-            this.runList.add(run);
-        log.info("Sample {} with {} runs will be written to {}.", sampleId, this.runList.size(), outDir);
-        this.sampleId = sampleId;
+    public NcbiDownloader(ReadSample sampleIn, File outDir, boolean zipped) throws IOException {
+        // Get the list of runs.
+        this.sample = sampleIn;
+        log.info("Sample {} will be written to {}.", sample, outDir);
         // Create the output files.
-        this.leftFastqStream = this.openStream(outDir, zipped, "_1");
-        this.rightFastqStream = this.openStream(outDir, zipped, "_2");
-        this.singleFastqStream = this.openStream(outDir, zipped, "_s");
+        sampleIn.openStreams(outDir, zipped);
         // Initialize the counters.
         this.errorCount = 0;
         this.runCount = 0;
@@ -98,7 +78,7 @@ public class NcbiDownloader implements AutoCloseable {
         this.singleCount = 0;
         this.readCount = 0;
         // Set up the summary string.
-        this.summaryString = "Sample " + sampleId + " being initialized.";
+        this.summaryString = "Sample " + sample.getId() + " being initialized.";
     }
 
     /**
@@ -130,7 +110,7 @@ public class NcbiDownloader implements AutoCloseable {
                 while (dumpIter.hasNext()) {
                     // Here we need to get the next read and determine the type.  In general, we will get paired reads
                     // next to each other, left followed by right.
-                    SeqPart read = new SeqPart(dumpIter);
+                    SeqPart read = SeqPart.read(NcbiDownloader.this.sample, dumpIter);
                     NcbiDownloader.this.readCount++;
                     // Determine the read type.
                     switch (read.getType()) {
@@ -200,7 +180,7 @@ public class NcbiDownloader implements AutoCloseable {
      */
     protected void logProgress() {
         log.info("{} reads processed in sample {}.  {} pairs, {} singles, {} errors.",
-                this.readCount, this.sampleId, this.pairCount, this.singleCount, this.errorCount);
+                this.readCount, this.sample.getId(), this.pairCount, this.singleCount, this.errorCount);
     }
 
     /**
@@ -210,38 +190,10 @@ public class NcbiDownloader implements AutoCloseable {
      * @param rightRead	right read part
      */
     private void writePair(SeqPart leftRead, SeqPart rightRead) {
-        leftRead.write(this.leftFastqStream);
-        rightRead.write(this.rightFastqStream);
+        this.sample.writePair(leftRead, rightRead);
         this.pairCount++;
     }
 
-    /**
-     * Open an output stream for one of the sample output files.
-     *
-     * @param outDir	directory to contain the files
-     * @param zipped	TRUE if the stream should be GZIPped
-     * @param suffix	suffix for the file name
-     *
-     * @return the open output stream
-     *
-     * @throws IOException
-     */
-    private PrintWriter openStream(File outDir, boolean zipped, String suffix) throws IOException {
-        // Compute the appropriate extension and build the file name.
-        String ext = ".fastq";
-        if (zipped) ext += ".gz";
-        File outFile = new File(outDir, this.sampleId + suffix + ext);
-        // Open the appropriate type of output stream.
-        PrintWriter retVal;
-        if (! zipped)
-            retVal = new PrintWriter(outFile);
-        else {
-            OutputStream outStream = new FileOutputStream(outFile);
-            outStream = new GZIPOutputStream(outStream);
-            retVal = new PrintWriter(outStream);
-        }
-        return retVal;
-    }
 
     /**
      * Execute the download of this object's runs.
@@ -249,14 +201,15 @@ public class NcbiDownloader implements AutoCloseable {
      * @throws IOException
      */
     public void execute() {
-        this.summaryString = "Download of sample " + this.sampleId + " in progress.";
-        log.info("Downloading sample {}.", this.sampleId);
-        for (String run : this.runList) {
+        this.summaryString = "Download of sample " + this.sample.getId() + " in progress.";
+        log.info("Downloading sample {}.", this.sample.getId());
+        Set<String> runs = this.sample.getRuns();
+        for (String run : runs) {
             this.runCount++;
-            log.info("Processing run {} of {}: {}.", this.runCount, this.runList.size(), run);
+            log.info("Processing run {} of {}: {}.", this.runCount, runs.size(), run);
             this.downloadRun(run);
         }
-        this.summaryString = String.format("Sample %s downloaded from %d runs, %d pairs, %d singletons, and %d errors.", this.sampleId,
+        this.summaryString = String.format("Sample %s downloaded from %d runs, %d pairs, %d singletons, and %d errors.", this.sample.getId(),
                 this.runCount, this.pairCount, this.singleCount, this.errorCount);
         log.info(this.summaryString);
     }
@@ -288,9 +241,7 @@ public class NcbiDownloader implements AutoCloseable {
                 ProcessUtils.finishProcess("FASTQ-DUMP", dlProcess, messages);
             }
             // Flush the output.
-            this.leftFastqStream.flush();
-            this.rightFastqStream.flush();
-            this.singleFastqStream.flush();
+            this.sample.flushStreams();
             log.info("Run {} downloaded.", run);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -323,23 +274,7 @@ public class NcbiDownloader implements AutoCloseable {
 
     @Override
     public void close() {
-        this.closeStream("left", this.leftFastqStream);
-        this.leftFastqStream = null;
-        this.closeStream("right", this.rightFastqStream);
-        this.rightFastqStream = null;
-        this.closeStream("single", this.singleFastqStream);
-        this.singleFastqStream = null;
-    }
-
-    /**
-     * Close one of the output streams.
-     *
-     * @param type		type of stream being closed
-     * @param stream	stream to close
-     */
-    private void closeStream(String type, PrintWriter stream) {
-        if (stream != null)
-            stream.close();
+        this.sample.closeStreams();
     }
 
     /**
@@ -348,7 +283,7 @@ public class NcbiDownloader implements AutoCloseable {
      * @param read	read to write
      */
     public void writeSingleton(SeqPart read) {
-        read.write(this.singleFastqStream);
+        this.sample.writeSingle(read);
         this.singleCount++;
     }
 

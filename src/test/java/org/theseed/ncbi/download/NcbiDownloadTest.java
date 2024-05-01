@@ -18,7 +18,8 @@ class NcbiDownloadTest {
     @Test
     void testDownloader() throws IOException {
         File outDir = new File("data", "dl_test");
-        try (NcbiDownloader dl = new NcbiDownloader("SRS281652", outDir, false, "SRR387728", "SRR387730")) {
+        // TODO construct sample here
+        try (NcbiDownloader dl = new NcbiDownloader(null, outDir, false)) {
             dl.execute();
         }
 

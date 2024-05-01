@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * This object represents a partial sequence read.  It contains the read identifier and the four lines of input data.
@@ -29,11 +25,6 @@ public class SeqPart {
     private Type type;
     /** data lines */
     private List<String> lines;
-    /** parsing pattern for a paired-read header */
-    private static final Pattern PAIRED_READ_HEADER = Pattern.compile("@(\\S+)(\\.[12])\\s+.+");
-    /** parsing pattern for a singleton-read header */
-    private static final Pattern SINGLE_READ_HEADER = Pattern.compile("@(\\S+).*");
-
 
     /** enumeration for the various read types */
     public static enum Type {
@@ -44,44 +35,44 @@ public class SeqPart {
      * Create a partial read from the next records in an input stream.  An early end-of-file or
      * an invalid record will cause an IO exception; however, the first record must exist.
      *
+     * @param sample	sample descriptor
      * @param iter		string iterator for the input stream
      *
      * @throws IOException
      */
-    public SeqPart(Iterator<String> iter) throws IOException {
-        this.lines = new ArrayList<String>(4);
+    public static SeqPart read(ReadSample sample, Iterator<String> iter) throws IOException {
         // Get the header.
         String header = iter.next();
-        Matcher m = PAIRED_READ_HEADER.matcher(header);
-        if (m.matches()) {
-            // Here we have a paired read.
-            this.id = m.group(1);
-            this.type = (m.group(2).endsWith("1") ? Type.LEFT : Type.RIGHT);
-        } else {
-            // Here we have a singleton read.
-            m = SINGLE_READ_HEADER.matcher(header);
-            if (! m.matches())
-                throw new IOException("Invalid FASTQ record starting with \"" + StringUtils.abbreviate(header, 20) + "\".");
-            else {
-                this.id = m.group(1);
-                this.type = Type.SINGLETON;
-            }
-        }
+        SeqPart retVal = sample.processHeader(header);
+        // Set up the line buffer.
+        retVal.lines = new ArrayList<String>(4);
         // Save the header line.
-        this.lines.add(header);
+        retVal.lines.add(header);
         try {
             // Save the sequence data line.
-            this.lines.add(iter.next());
+            retVal.lines.add(iter.next());
             // Verify the quality header.
             String qualHeader = iter.next();
             if (qualHeader.charAt(0) != '+')
-                throw new IOException(this.type.toString() + " FASTQ record for " + this.id + " has invalid quality header.");
-            this.lines.add(qualHeader);
+                throw new IOException(retVal.type.toString() + " FASTQ record for " + retVal.id + " has invalid quality header.");
+            retVal.lines.add(qualHeader);
             // Save the quality data line.
-            this.lines.add(iter.next());
+            retVal.lines.add(iter.next());
         } catch (NoSuchElementException e) {
             throw new IOException("End-of-file before full FASTQ record completed.");
         }
+        return retVal;
+    }
+
+    /**
+     * Construct a new sequence part with the specified ID and type.
+     *
+     * @param id2		sequence ID
+     * @param type2		sequence type
+     */
+    protected SeqPart(String id2, Type type2) {
+        this.id = id2;
+        this.type = type2;
     }
 
     /**
