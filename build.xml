@@ -8,12 +8,11 @@
     <property name="dir.jarfile" value="${dir.workspace}/git/kernel/jars"/>
     <property environment="env" />
     <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/ncbi.utils" filesetmanifest="mergewithoutmain">
+        <jar destfile="${dir.jarfile}/ncbi.utils.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="org.theseed.ncbi.utils.App"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="${dir.buildfile}/target/test-classes"/>
             <fileset dir="${dir.buildfile}/target/classes"/>
             <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${env.HOME}/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar"/>

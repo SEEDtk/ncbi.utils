@@ -130,7 +130,7 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
             lineCount++;
             String sampleId = line.get(sampColIdx);
             String runs = line.get(runColIdx);
-            String[] runList = runs.split(",\\S*");
+            String[] runList = runs.split(",\\s*");
             this.sampleMap.put(sampleId, runList);
             runCount += runList.length;
         }
@@ -159,7 +159,10 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
             if (this.missingFlag && markerFile.exists()) {
                 log.info("Skipping downloaded sample {}.", sampleId);
                 this.skipCount++;
-            } else
+            } else {
+                // Insure the output directory exists.
+                if (! sampleDir.isDirectory())
+                    FileUtils.forceMkdir(sampleDir);
                 try (NcbiDownloader downloader = new NcbiDownloader(sampleId, sampleDir, this.zipFlag, runList)) {
                     // Download the sample.
                     downloader.execute();
@@ -167,6 +170,7 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
                     MarkerFile.write(markerFile, downloader.summaryString());
                     this.downloadCount++;
                 }
+            }
         } catch (Exception e) {
             log.error("Sample {} failed during download: {}.", sampleId, e.toString());
             this.failCount++;
