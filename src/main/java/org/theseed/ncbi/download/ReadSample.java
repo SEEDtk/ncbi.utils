@@ -32,7 +32,8 @@ public abstract class ReadSample {
     // FIELDS
     /** logging facility */
     protected static Logger log = LoggerFactory.getLogger(ReadSample.class);
-
+    /** title of this sample */
+    private String title;
     /** ID of this sample */
     private String sampleId;
     /** list of run IDs */
@@ -54,6 +55,11 @@ public abstract class ReadSample {
         // Denote no runs so far.
         this.spots = 0;
         this.runs = new TreeSet<String>(new NaturalSort());
+        // Save the sample title.
+        this.title = XmlUtils.getXmlString(expElement, "TITLE");
+        if (this.title.isBlank()) {
+            this.title = "Unknown sample.";
+        }
         // Now add the run data.
         this.addRuns(expElement);
     }
@@ -224,5 +230,13 @@ public abstract class ReadSample {
         }
         return retVal;
     }
+
+    /**
+     * @return the sample title
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
 
 }

@@ -44,19 +44,21 @@ class NcbiDownloadTest {
         String sampleId = ReadSample.getSampleId(children.get(2));
         ReadSample sample = ReadSample.create(sampleId, children.get(2));
         assertThat(sample instanceof PairedReadSample, equalTo(true));
+        assertThat(sample.getTitle(), equalTo("WGS of neisseria meningitidis genome: strain MC58"));
         try (NcbiDownloader dl = new NcbiDownloader(sample, outDir, true)) {
             dl.execute();
         }
-        File testFile = new File(outDir, "SRS166902_1.fastq.gz");
+        File testFile = new File(outDir, "SRS1669092_1.fastq.gz");
         assertThat(testFile.canRead(), equalTo(true));
-        testFile = new File(outDir, "SRS166902_2.fastq.gz");
+        testFile = new File(outDir, "SRS1669092_2.fastq.gz");
         assertThat(testFile.canRead(), equalTo(true));
-        testFile = new File(outDir, "SRS166902_s.fastq.gz");
-        assertThat(testFile.canRead(), equalTo(true));
+        testFile = new File(outDir, "SRS1669092_s.fastq.gz");
+        assertThat(testFile.canRead(), equalTo(false));
         sampleId = ReadSample.getSampleId(children.get(0));
         assertThat(sampleId, equalTo("SRS258413"));
         sample = ReadSample.create(sampleId, children.get(0));
         assertThat(sample instanceof SingleReadSample, equalTo(true));
+        assertThat(sample.getTitle(), equalTo("Mesorhizobium ciceri biovar biserrulae WSM1271"));
         sample.addRuns(children.get(1));
         try (NcbiDownloader dl = new NcbiDownloader(sample, outDir, false)) {
             dl.execute();
