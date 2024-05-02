@@ -91,6 +91,8 @@ public class NcbiDownloader implements AutoCloseable {
         private LineReader dumpOutput;
         /** buffered left read */
         private SeqPart leftRead;
+        /** error that terminated this consumer abnormally */
+        private RuntimeException error;
 
         /**
          * Construct a sequence consumer for a specified input stream.
@@ -100,13 +102,14 @@ public class NcbiDownloader implements AutoCloseable {
         public SeqConsumer(LineReader seqReader) {
             this.dumpOutput = seqReader;
             this.leftRead = null;
+            this.error = null;
         }
 
         @Override
         public void run() {
             long lastMessage = System.currentTimeMillis();
+            Iterator<String> dumpIter = this.dumpOutput.iterator();
             try {
-                Iterator<String> dumpIter = this.dumpOutput.iterator();
                 while (dumpIter.hasNext()) {
                     // Here we need to get the next read and determine the type.  In general, we will get paired reads
                     // next to each other, left followed by right.
@@ -147,19 +150,44 @@ public class NcbiDownloader implements AutoCloseable {
                         break;
                     }
                     long now = System.currentTimeMillis();
-                    if (now - lastMessage >= 10000) {
+                    if (now - lastMessage >= 5000) {
                         NcbiDownloader.this.logProgress();
                         lastMessage = now;
                     }
                 }
+            } catch (RuntimeException e) {
+                // Convert an exception to a failure message.
+                log.error("Error in sample download.", e);
+                this.error = e;
             } catch (IOException e) {
-                // Convert IO exceptions to runtime.
-                throw new UncheckedIOException(e);
+                log.error("Error in sample download.", e);
+                this.error = new UncheckedIOException(e);
             }
+            // Clear the iterator.
+            int residual = 0;
+            while (dumpIter.hasNext()) {
+                dumpIter.next();
+                residual++;
+            }
+            if (residual > 0)
+                log.error("{} downloaded lines discarded.", residual);
+        }
+
+        /**
+         * @return TRUE if an error occurred during download.
+         */
+        public boolean failed() {
+            return this.error != null;
+        }
+
+        /**
+         * @return the error that terminated this consumer
+         */
+        public RuntimeException getError() {
+            return this.error;
         }
 
     }
-
 
     /**
      * @return the directory containing the SRA toolkit binaries
@@ -227,9 +255,9 @@ public class NcbiDownloader implements AutoCloseable {
             ProcessBuilder dlCommand = new ProcessBuilder(command);
             dlCommand.redirectInput(Redirect.INHERIT);
             Process dlProcess = dlCommand.start();
+            // Create a thread to read the downloaded sequences.
             try (LineReader seqReader = new LineReader(dlProcess.getInputStream());
                     LineReader logReader = new LineReader(dlProcess.getErrorStream())) {
-                // Create a thread to read the downloaded sequences.
                 SeqConsumer seqProcessor = this.new SeqConsumer(seqReader);
                 seqProcessor.start();
                 // Create a thread to save error log messages.  Generally there are none.
@@ -240,6 +268,9 @@ public class NcbiDownloader implements AutoCloseable {
                 seqProcessor.join();
                 errorReader.join();
                 ProcessUtils.finishProcess("FASTQ-DUMP", dlProcess, messages);
+                // If there was an error in the consumer thread, re-throw it here.
+                if (seqProcessor.failed())
+                    throw seqProcessor.getError();
             }
             // Flush the output.
             this.sample.flushStreams();
@@ -247,9 +278,8 @@ public class NcbiDownloader implements AutoCloseable {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } catch (InterruptedException e) {
-            throw new RuntimeException("Interrupted BLAST execution: " + e.toString(), e);
+            throw new RuntimeException("Interrupted FASTQ download execution: " + e.toString(), e);
         }
-
     }
 
     /**
