@@ -32,7 +32,7 @@ public class PairedReadSample extends ReadSample {
     /** output directory for files */
     private File sampleDir;
     /** parsing pattern for a paired-read header */
-    private static final Pattern PAIRED_READ_HEADER = Pattern.compile("@(\\S+)(\\.[12])\\s+.+");
+    private static final Pattern PAIRED_READ_HEADER = Pattern.compile("@(\\S+)\\.([12])\\s+.+");
 
     /**
      * Construct a new sample descriptor for a paired-read sample.
@@ -107,5 +107,10 @@ public class PairedReadSample extends ReadSample {
             this.singleStream.close();
     }
 
-    // TODO constructors and methods for PairedReadSample
+    @Override
+    public String toString() {
+        return this.getId() + "(" + this.getRuns().size() + " runs, paired-end)";
+    }
+
+
 }

@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<RAW_DATA>
+ <EXPERIMENT_PACKAGE>
+        <EXPERIMENT accession="SRX1952484" alias="JGI-SRA-19571">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRX1952484</PRIMARY_ID>
+                <EXTERNAL_ID namespace="JGI">JGI-SRA-19571</EXTERNAL_ID>
+            </IDENTIFIERS>
+            <TITLE>Mesorhizobium ciceri biovar biserrulae WSM1271 </TITLE>
+            <STUDY_REF accession="SRP005256">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRP005256</PRIMARY_ID>
+                    <EXTERNAL_ID namespace="BioProject">PRJNA48991</EXTERNAL_ID>
+                </IDENTIFIERS>
+            </STUDY_REF>
+            <DESIGN>
+                <DESIGN_DESCRIPTION/>
+                <SAMPLE_DESCRIPTOR accession="SRS258413">
+                    <IDENTIFIERS>
+                        <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                        <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+                    </IDENTIFIERS>
+                </SAMPLE_DESCRIPTOR>
+                <LIBRARY_DESCRIPTOR>
+                    <LIBRARY_NAME>GCFU</LIBRARY_NAME>
+                    <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+                    <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+                    <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+                    <LIBRARY_LAYOUT>
+                        <SINGLE/>
+                    </LIBRARY_LAYOUT>
+                    <LIBRARY_CONSTRUCTION_PROTOCOL>Solexa paired ends</LIBRARY_CONSTRUCTION_PROTOCOL>
+                </LIBRARY_DESCRIPTOR>
+            </DESIGN>
+            <PLATFORM>
+                <ILLUMINA>
+                    <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+                </ILLUMINA>
+            </PLATFORM>
+        </EXPERIMENT>
+        <SUBMISSION accession="SRA440931" alias="SUB1690321" center_name="JGI" lab_name="">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRA440931</PRIMARY_ID>
+                <SUBMITTER_ID namespace="JGI">SUB1690321</SUBMITTER_ID>
+            </IDENTIFIERS>
+        </SUBMISSION>
+        <Organization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" org_id="37" type="institute" url="http://jgi.doe.gov/">
+            <Name abbr="JGI">DOE Joint Genome Institute</Name>
+            <Address>
+                <Institution>DOE Joint Genome Institute</Institution>
+            </Address>
+            <Contact email="jgi-genbank@lists.jgi-psf.org">
+                <Name>
+                    <First>JGI</First>
+                    <Last>genbank</Last>
+                </Name>
+            </Contact>
+            <Contact email="jgi-biosample@quagmire.jgi-psf.org">
+                <Name>
+                    <First>JGI</First>
+                    <Last>biosample</Last>
+                </Name>
+            </Contact>
+        </Organization>
+        <STUDY accession="SRP005256" alias="6166" center_name="JGI">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRP005256</PRIMARY_ID>
+                <EXTERNAL_ID label="primary" namespace="BioProject">PRJNA48991</EXTERNAL_ID>
+                <SUBMITTER_ID namespace="JGI">6166</SUBMITTER_ID>
+            </IDENTIFIERS>
+            <DESCRIPTOR>
+                <STUDY_TITLE>Mesorhizobium ciceri biovar biserrulae WSM1271 genome sequencing</STUDY_TITLE>
+                <STUDY_TYPE existing_study_type="Whole Genome Sequencing"/>
+                <STUDY_ABSTRACT>&lt;P&gt;&lt;B&gt;&lt;I&gt;Mesorhizobium ciceri&lt;/I&gt; biovar &lt;I&gt;biserrulae&lt;/I&gt; WSM1271&lt;/B&gt;. This organism is part of the GEBA (A Genomic Encyclopedia of Bacteria and Archaea) project.</STUDY_ABSTRACT>
+                <CENTER_PROJECT_NAME>Mesorhizobium ciceri biovar biserrulae WSM1271</CENTER_PROJECT_NAME>
+            </DESCRIPTOR>
+        </STUDY>
+        <SAMPLE accession="SRS258413" alias="SAMN00713576">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+            </IDENTIFIERS>
+            <TITLE>Mesorhizobium ciceri biovar biserrulae WSM1271 plasmid pMESCI01, complete sequence.</TITLE>
+            <SAMPLE_NAME>
+                <TAXON_ID>765698</TAXON_ID>
+                <SCIENTIFIC_NAME>Mesorhizobium ciceri biovar biserrulae WSM1271</SCIENTIFIC_NAME>
+            </SAMPLE_NAME>
+            <DESCRIPTION>Keywords: GSC:MIGS:2.1</DESCRIPTION>
+            <SAMPLE_ATTRIBUTES>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>biotic_relationship</TAG>
+                    <VALUE>symbiont</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Isolation Site</TAG>
+                    <VALUE>5 km before Bottida, Sardinia</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Symbiotic Relationship</TAG>
+                    <VALUE>Mutualistic</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>isol_growth_condt</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Motility</TAG>
+                    <VALUE>Motile</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>pH</TAG>
+                    <VALUE>5.5-8.0</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>GOLD Stamp ID</TAG>
+                    <VALUE>Gi03277</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>lat_lon</TAG>
+                    <VALUE>40.382709 N 9.012008 E</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Source of Isolate</TAG>
+                    <VALUE>Howieson</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Diseases</TAG>
+                    <VALUE>None</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>collection_date</TAG>
+                    <VALUE>29-Apr-1993</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>investigation_type</TAG>
+                    <VALUE>bacteria_archaea</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>environment</TAG>
+                    <VALUE>Host, Rhizosphere, Root nodule, Soil, Plant root</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Gram Staining</TAG>
+                    <VALUE>Gram-</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Isolation Comments</TAG>
+                    <VALUE>growth in 96 hrs on 0.5LA</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Temperature Range</TAG>
+                    <VALUE>Mesophile</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Type Strain</TAG>
+                    <VALUE>No</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>rel_to_oxygen</TAG>
+                    <VALUE>aerobe</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>project_name</TAG>
+                    <VALUE>Mesorhizobium ciceri bv biserrulae WSM1271</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>ref_biomaterial</TAG>
+                    <VALUE>LMG 23838, HAMBI 2942</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>alt_elev</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>num_replicons</TAG>
+                    <VALUE>2</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Funding Program</TAG>
+                    <VALUE>DOE-CSP 2009</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>trophic_level</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>country</TAG>
+                    <VALUE>Italy</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Greengenes ID</TAG>
+                    <VALUE>101371</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>strain</TAG>
+                    <VALUE>WSM1271</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>depth</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Cell Shape</TAG>
+                    <VALUE>Rod-shaped</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Host Name</TAG>
+                    <VALUE>Biserrula pelecinus L</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>biovar</TAG>
+                    <VALUE>biserrulae WSM1271</VALUE>
+                </SAMPLE_ATTRIBUTE>
+            </SAMPLE_ATTRIBUTES>
+        </SAMPLE>
+        <Pool>
+            <Member accession="SRS258413" bases="256548528" member_name="" organism="Mesorhizobium ciceri biovar biserrulae WSM1271" sample_name="SAMN00713576" sample_title="Mesorhizobium ciceri biovar biserrulae WSM1271 plasmid pMESCI01, complete sequence." spots="7126348" tax_id="765698">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                    <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+                </IDENTIFIERS>
+            </Member>
+        </Pool>
+        <RUN_SET bases="256548528" bytes="115837789" runs="1" spots="7126348">
+            <RUN accession="SRR3926319" alias="JGI-SRA-19571" cluster_name="public" has_taxanalysis="1" is_public="true" load_done="true" published="2016-07-15 21:05:33" size="115837789" static_data_available="1" total_bases="256548528" total_spots="7126348">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRR3926319</PRIMARY_ID>
+                    <EXTERNAL_ID namespace="JGI">JGI-SRA-19571</EXTERNAL_ID>
+                </IDENTIFIERS>
+                <EXPERIMENT_REF accession="SRX1952484">
+                    <IDENTIFIERS>
+                        <EXTERNAL_ID namespace="JGI">JGI-SRA-19571</EXTERNAL_ID>
+                    </IDENTIFIERS>
+                </EXPERIMENT_REF>
+                <RUN_ATTRIBUTES>
+                    <RUN_ATTRIBUTE>
+                        <TAG>loader</TAG>
+                        <VALUE>latf-load</VALUE>
+                    </RUN_ATTRIBUTE>
+                    <RUN_ATTRIBUTE>
+                        <TAG>run_id</TAG>
+                        <VALUE>1861</VALUE>
+                    </RUN_ATTRIBUTE>
+                    <RUN_ATTRIBUTE>
+                        <TAG>nominal_length</TAG>
+                        <VALUE>0.3</VALUE>
+                    </RUN_ATTRIBUTE>
+                </RUN_ATTRIBUTES>
+                <Pool>
+                    <Member accession="SRS258413" bases="256548528" member_name="" organism="Mesorhizobium ciceri biovar biserrulae WSM1271" sample_name="SAMN00713576" sample_title="Mesorhizobium ciceri biovar biserrulae WSM1271 plasmid pMESCI01, complete sequence." spots="7126348" tax_id="765698">
+                        <IDENTIFIERS>
+                            <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                            <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+                        </IDENTIFIERS>
+                    </Member>
+                </Pool>
+                <SRAFiles>
+                    <SRAFile cluster="public" date="2020-04-10 01:52:18" filename="228.2.235.fastq.gz" md5="5af4dd789b78889573874f7208e062c5" semantic_name="fastq" size="202630479" sratoolkit="0" supertype="Original" version="1">
+                        <Alternatives access_type="Use Cloud Data Delivery" free_egress="-" org="AWS" url="s3://sra-pub-src-6/SRR3926319/228.2.235.fastq.gz"/>
+                    </SRAFile>
+                    <SRAFile cluster="public" date="2016-07-15 21:08:17" filename="SRR3926319" md5="8bff8b98fa1161470af34a8b497bd993" semantic_name="SRA Normalized" size="115839019" sratoolkit="1" supertype="Primary ETL" url="https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR3926319/SRR3926319" version="1">
+                        <Alternatives access_type="anonymous" free_egress="worldwide" org="AWS" url="https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR3926319/SRR3926319"/>
+                    </SRAFile>
+                    <SRAFile cluster="public" date="2020-06-23 02:30:36" filename="SRR3926319.sralite" md5="0def8eda371a82751ecee22536be5221" semantic_name="SRA Lite" size="64650267" sratoolkit="1" supertype="Primary ETL" url="https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-14/SRR003/926/SRR3926319.sralite.1" version="1">
+                        <Alternatives access_type="anonymous" free_egress="worldwide" org="NCBI" url="https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-14/SRR003/926/SRR3926319.sralite.1"/>
+                        <Alternatives access_type="aws identity" free_egress="s3.us-east-1" org="AWS" url="s3://sra-pub-zq-1/SRR3926319/SRR3926319.sralite.1"/>
+                        <Alternatives access_type="gcp identity" free_egress="gs.us-east1" org="GCP" url="gs://sra-pub-zq-105/SRR3926319/SRR3926319.zq.1"/>
+                    </SRAFile>
+                </SRAFiles>
+                <CloudFiles>
+                    <CloudFile filetype="fastq" location="s3.us-east-1" provider="s3"/>
+                    <CloudFile filetype="run" location="s3.us-east-1" provider="s3"/>
+                    <CloudFile filetype="run.zq" location="gs.us-east1" provider="gs"/>
+                    <CloudFile filetype="run.zq" location="s3.us-east-1" provider="s3"/>
+                </CloudFiles>
+                <Statistics nreads="1" nspots="7126348">
+                    <Read average="36" count="7126348" index="0" stdev="0"/>
+                </Statistics>
+                <Databases>
+                    <Database>
+                        <Table name="SEQUENCE">
+                            <Statistics source="meta">
+                                <Rows count="7126348"/>
+                                <Elements count="256548528"/>
+                            </Statistics>
+                        </Table>
+                    </Database>
+                </Databases>
+                <Bases count="256548528" cs_native="false">
+                    <Base count="50062711" value="A"/>
+                    <Base count="76322852" value="C"/>
+                    <Base count="76592383" value="G"/>
+                    <Base count="52074999" value="T"/>
+                    <Base count="1495583" value="N"/>
+                </Bases>
+            </RUN>
+        </RUN_SET>
+    </EXPERIMENT_PACKAGE>
+<EXPERIMENT_PACKAGE>
+        <EXPERIMENT accession="SRX1952483" alias="JGI-SRA-19570">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRX1952483</PRIMARY_ID>
+                <EXTERNAL_ID namespace="JGI">JGI-SRA-19570</EXTERNAL_ID>
+            </IDENTIFIERS>
+            <TITLE>Mesorhizobium ciceri biovar biserrulae WSM1271 </TITLE>
+            <STUDY_REF accession="SRP005256">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRP005256</PRIMARY_ID>
+                    <EXTERNAL_ID namespace="BioProject">PRJNA48991</EXTERNAL_ID>
+                </IDENTIFIERS>
+            </STUDY_REF>
+            <DESIGN>
+                <DESIGN_DESCRIPTION/>
+                <SAMPLE_DESCRIPTOR accession="SRS258413">
+                    <IDENTIFIERS>
+                        <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                        <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+                    </IDENTIFIERS>
+                </SAMPLE_DESCRIPTOR>
+                <LIBRARY_DESCRIPTOR>
+                    <LIBRARY_NAME>GCFU</LIBRARY_NAME>
+                    <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+                    <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+                    <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+                    <LIBRARY_LAYOUT>
+                        <SINGLE/>
+                    </LIBRARY_LAYOUT>
+                    <LIBRARY_CONSTRUCTION_PROTOCOL>Solexa paired ends</LIBRARY_CONSTRUCTION_PROTOCOL>
+                </LIBRARY_DESCRIPTOR>
+            </DESIGN>
+            <PLATFORM>
+                <ILLUMINA>
+                    <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+                </ILLUMINA>
+            </PLATFORM>
+        </EXPERIMENT>
+        <SUBMISSION accession="SRA440931" alias="SUB1690321" center_name="JGI" lab_name="">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRA440931</PRIMARY_ID>
+                <SUBMITTER_ID namespace="JGI">SUB1690321</SUBMITTER_ID>
+            </IDENTIFIERS>
+        </SUBMISSION>
+        <Organization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" org_id="37" type="institute" url="http://jgi.doe.gov/">
+            <Name abbr="JGI">DOE Joint Genome Institute</Name>
+            <Address>
+                <Institution>DOE Joint Genome Institute</Institution>
+            </Address>
+            <Contact email="jgi-genbank@lists.jgi-psf.org">
+                <Name>
+                    <First>JGI</First>
+                    <Last>genbank</Last>
+                </Name>
+            </Contact>
+            <Contact email="jgi-biosample@quagmire.jgi-psf.org">
+                <Name>
+                    <First>JGI</First>
+                    <Last>biosample</Last>
+                </Name>
+            </Contact>
+        </Organization>
+        <STUDY accession="SRP005256" alias="6166" center_name="JGI">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRP005256</PRIMARY_ID>
+                <EXTERNAL_ID label="primary" namespace="BioProject">PRJNA48991</EXTERNAL_ID>
+                <SUBMITTER_ID namespace="JGI">6166</SUBMITTER_ID>
+            </IDENTIFIERS>
+            <DESCRIPTOR>
+                <STUDY_TITLE>Mesorhizobium ciceri biovar biserrulae WSM1271 genome sequencing</STUDY_TITLE>
+                <STUDY_TYPE existing_study_type="Whole Genome Sequencing"/>
+                <STUDY_ABSTRACT>&lt;P&gt;&lt;B&gt;&lt;I&gt;Mesorhizobium ciceri&lt;/I&gt; biovar &lt;I&gt;biserrulae&lt;/I&gt; WSM1271&lt;/B&gt;. This organism is part of the GEBA (A Genomic Encyclopedia of Bacteria and Archaea) project.</STUDY_ABSTRACT>
+                <CENTER_PROJECT_NAME>Mesorhizobium ciceri biovar biserrulae WSM1271</CENTER_PROJECT_NAME>
+            </DESCRIPTOR>
+        </STUDY>
+        <SAMPLE accession="SRS258413" alias="SAMN00713576">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+            </IDENTIFIERS>
+            <TITLE>Mesorhizobium ciceri biovar biserrulae WSM1271 plasmid pMESCI01, complete sequence.</TITLE>
+            <SAMPLE_NAME>
+                <TAXON_ID>765698</TAXON_ID>
+                <SCIENTIFIC_NAME>Mesorhizobium ciceri biovar biserrulae WSM1271</SCIENTIFIC_NAME>
+            </SAMPLE_NAME>
+            <DESCRIPTION>Keywords: GSC:MIGS:2.1</DESCRIPTION>
+            <SAMPLE_ATTRIBUTES>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>biotic_relationship</TAG>
+                    <VALUE>symbiont</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Isolation Site</TAG>
+                    <VALUE>5 km before Bottida, Sardinia</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Symbiotic Relationship</TAG>
+                    <VALUE>Mutualistic</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>isol_growth_condt</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Motility</TAG>
+                    <VALUE>Motile</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>pH</TAG>
+                    <VALUE>5.5-8.0</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>GOLD Stamp ID</TAG>
+                    <VALUE>Gi03277</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>lat_lon</TAG>
+                    <VALUE>40.382709 N 9.012008 E</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Source of Isolate</TAG>
+                    <VALUE>Howieson</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Diseases</TAG>
+                    <VALUE>None</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>collection_date</TAG>
+                    <VALUE>29-Apr-1993</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>investigation_type</TAG>
+                    <VALUE>bacteria_archaea</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>environment</TAG>
+                    <VALUE>Host, Rhizosphere, Root nodule, Soil, Plant root</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Gram Staining</TAG>
+                    <VALUE>Gram-</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Isolation Comments</TAG>
+                    <VALUE>growth in 96 hrs on 0.5LA</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Temperature Range</TAG>
+                    <VALUE>Mesophile</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Type Strain</TAG>
+                    <VALUE>No</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>rel_to_oxygen</TAG>
+                    <VALUE>aerobe</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>project_name</TAG>
+                    <VALUE>Mesorhizobium ciceri bv biserrulae WSM1271</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>ref_biomaterial</TAG>
+                    <VALUE>LMG 23838, HAMBI 2942</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>alt_elev</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>num_replicons</TAG>
+                    <VALUE>2</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Funding Program</TAG>
+                    <VALUE>DOE-CSP 2009</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>trophic_level</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>country</TAG>
+                    <VALUE>Italy</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Greengenes ID</TAG>
+                    <VALUE>101371</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>strain</TAG>
+                    <VALUE>WSM1271</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>depth</TAG>
+                    <VALUE>Missing</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Cell Shape</TAG>
+                    <VALUE>Rod-shaped</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>Host Name</TAG>
+                    <VALUE>Biserrula pelecinus L</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>biovar</TAG>
+                    <VALUE>biserrulae WSM1271</VALUE>
+                </SAMPLE_ATTRIBUTE>
+            </SAMPLE_ATTRIBUTES>
+        </SAMPLE>
+        <Pool>
+            <Member accession="SRS258413" bases="231126300" member_name="" organism="Mesorhizobium ciceri biovar biserrulae WSM1271" sample_name="SAMN00713576" sample_title="Mesorhizobium ciceri biovar biserrulae WSM1271 plasmid pMESCI01, complete sequence." spots="6420175" tax_id="765698">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                    <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+                </IDENTIFIERS>
+            </Member>
+        </Pool>
+        <RUN_SET bases="231126300" bytes="108647206" runs="1" spots="6420175">
+            <RUN accession="SRR3926318" alias="JGI-SRA-19570" cluster_name="public" has_taxanalysis="1" is_public="true" load_done="true" published="2016-07-15 21:05:28" size="108647206" static_data_available="1" total_bases="231126300" total_spots="6420175">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRR3926318</PRIMARY_ID>
+                    <EXTERNAL_ID namespace="JGI">JGI-SRA-19570</EXTERNAL_ID>
+                </IDENTIFIERS>
+                <EXPERIMENT_REF accession="SRX1952483">
+                    <IDENTIFIERS>
+                        <EXTERNAL_ID namespace="JGI">JGI-SRA-19570</EXTERNAL_ID>
+                    </IDENTIFIERS>
+                </EXPERIMENT_REF>
+                <RUN_ATTRIBUTES>
+                    <RUN_ATTRIBUTE>
+                        <TAG>loader</TAG>
+                        <VALUE>latf-load</VALUE>
+                    </RUN_ATTRIBUTE>
+                    <RUN_ATTRIBUTE>
+                        <TAG>run_id</TAG>
+                        <VALUE>999</VALUE>
+                    </RUN_ATTRIBUTE>
+                    <RUN_ATTRIBUTE>
+                        <TAG>nominal_length</TAG>
+                        <VALUE>0.3</VALUE>
+                    </RUN_ATTRIBUTE>
+                </RUN_ATTRIBUTES>
+                <Pool>
+                    <Member accession="SRS258413" bases="231126300" member_name="" organism="Mesorhizobium ciceri biovar biserrulae WSM1271" sample_name="SAMN00713576" sample_title="Mesorhizobium ciceri biovar biserrulae WSM1271 plasmid pMESCI01, complete sequence." spots="6420175" tax_id="765698">
+                        <IDENTIFIERS>
+                            <PRIMARY_ID>SRS258413</PRIMARY_ID>
+                            <EXTERNAL_ID namespace="BioSample">SAMN00713576</EXTERNAL_ID>
+                        </IDENTIFIERS>
+                    </Member>
+                </Pool>
+                <SRAFiles>
+                    <SRAFile cluster="public" date="2020-04-10 01:52:18" filename="222.4.221.fastq.gz" md5="851cf909f9d71277a2ede8806133ad70" semantic_name="fastq" size="186505313" sratoolkit="0" supertype="Original" version="1">
+                        <Alternatives access_type="Use Cloud Data Delivery" free_egress="-" org="AWS" url="s3://sra-pub-src-5/SRR3926318/222.4.221.fastq.gz"/>
+                    </SRAFile>
+                    <SRAFile cluster="public" date="2016-07-15 21:08:10" filename="SRR3926318" md5="e912aa9455de9ae0298f32420e965840" semantic_name="SRA Normalized" size="108648436" sratoolkit="1" supertype="Primary ETL" url="https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR3926318/SRR3926318" version="1">
+                        <Alternatives access_type="anonymous" free_egress="worldwide" org="AWS" url="https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR3926318/SRR3926318"/>
+                    </SRAFile>
+                    <SRAFile cluster="public" date="2020-06-23 02:30:39" filename="SRR3926318.sralite" md5="fb0ad8da62d48e978597d5126ba7cfc9" semantic_name="SRA Lite" size="58379332" sratoolkit="1" supertype="Primary ETL" url="https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-14/SRR003/926/SRR3926318.sralite.1" version="1">
+                        <Alternatives access_type="anonymous" free_egress="worldwide" org="NCBI" url="https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-14/SRR003/926/SRR3926318.sralite.1"/>
+                        <Alternatives access_type="aws identity" free_egress="s3.us-east-1" org="AWS" url="s3://sra-pub-zq-5/SRR3926318/SRR3926318.sralite.1"/>
+                        <Alternatives access_type="gcp identity" free_egress="gs.us-east1" org="GCP" url="gs://sra-pub-zq-107/SRR3926318/SRR3926318.zq.1"/>
+                    </SRAFile>
+                </SRAFiles>
+                <CloudFiles>
+                    <CloudFile filetype="fastq" location="s3.us-east-1" provider="s3"/>
+                    <CloudFile filetype="run" location="s3.us-east-1" provider="s3"/>
+                    <CloudFile filetype="run.zq" location="gs.us-east1" provider="gs"/>
+                    <CloudFile filetype="run.zq" location="s3.us-east-1" provider="s3"/>
+                </CloudFiles>
+                <Statistics nreads="1" nspots="6420175">
+                    <Read average="36" count="6420175" index="0" stdev="0"/>
+                </Statistics>
+                <Databases>
+                    <Database>
+                        <Table name="SEQUENCE">
+                            <Statistics source="meta">
+                                <Rows count="6420175"/>
+                                <Elements count="231126300"/>
+                            </Statistics>
+                        </Table>
+                    </Database>
+                </Databases>
+                <Bases count="231126300" cs_native="false">
+                    <Base count="47575029" value="A"/>
+                    <Base count="70831408" value="C"/>
+                    <Base count="67620862" value="G"/>
+                    <Base count="44040575" value="T"/>
+                    <Base count="1058426" value="N"/>
+                </Bases>
+            </RUN>
+        </RUN_SET>
+    </EXPERIMENT_PACKAGE>
+    <EXPERIMENT_PACKAGE>
+        <EXPERIMENT accession="SRX2130009" alias="MC58_GENOMIC_WGS_PAIRED_HiSEQ2000">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRX2130009</PRIMARY_ID>
+            </IDENTIFIERS>
+            <TITLE>WGS of neisseria meningitidis genome: strain MC58</TITLE>
+            <STUDY_REF accession="SRP085561">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRP085561</PRIMARY_ID>
+                </IDENTIFIERS>
+            </STUDY_REF>
+            <DESIGN>
+                <DESIGN_DESCRIPTION>Purified DNA was fragmented using the Covaris M220 Focused-ultrasonicatorTM and further processed using the Beckman Coulter SPRI-TETM instrument following the manufacturer's instructions. Clusters of flowcells were generated via the Illumina cBot cluster amplification system and the TruSeq PE Cluster Kit (v.2). Sequencing was carried out on an Illumina HighSeq2000 sequencer following manufacturer guidelines.</DESIGN_DESCRIPTION>
+                <SAMPLE_DESCRIPTOR accession="SRS1669092">
+                    <IDENTIFIERS>
+                        <PRIMARY_ID>SRS1669092</PRIMARY_ID>
+                        <EXTERNAL_ID namespace="BioSample">SAMN02603997</EXTERNAL_ID>
+                    </IDENTIFIERS>
+                </SAMPLE_DESCRIPTOR>
+                <LIBRARY_DESCRIPTOR>
+                    <LIBRARY_NAME>MC58_GENOMIC_WGS_PAIRED_HiSEQ2000</LIBRARY_NAME>
+                    <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+                    <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+                    <LIBRARY_SELECTION>PCR</LIBRARY_SELECTION>
+                    <LIBRARY_LAYOUT>
+                        <PAIRED/>
+                    </LIBRARY_LAYOUT>
+                </LIBRARY_DESCRIPTOR>
+            </DESIGN>
+            <PLATFORM>
+                <ILLUMINA>
+                    <INSTRUMENT_MODEL>Illumina HiSeq 2000</INSTRUMENT_MODEL>
+                </ILLUMINA>
+            </PLATFORM>
+        </EXPERIMENT>
+        <SUBMISSION accession="SRA461399" alias="SUB1785042" center_name="GSK vaccines" lab_name="Exploratory Data Analytics">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRA461399</PRIMARY_ID>
+                <SUBMITTER_ID namespace="GSK vaccines">SUB1785042</SUBMITTER_ID>
+            </IDENTIFIERS>
+        </SUBMISSION>
+        <Organization type="institute">
+            <Name>GSK vaccines</Name>
+            <Address postal_code="53100">
+                <Department>Exploratory Data Analytics</Department>
+                <Institution>GSK vaccines</Institution>
+                <Street>via Fiorentina, 1</Street>
+                <City>Siena</City>
+                <Country>Italy</Country>
+            </Address>
+            <Contact email="emilio.x.xiena@gsk.com" sec_email="sienaemilio@gmail.com">
+                <Address postal_code="53100">
+                    <Department>Exploratory Data Analytics</Department>
+                    <Institution>GSK vaccines</Institution>
+                    <Street>via Fiorentina, 1</Street>
+                    <City>Siena</City>
+                    <Country>Italy</Country>
+                </Address>
+                <Name>
+                    <First>Emilio</First>
+                    <Last>Siena</Last>
+                </Name>
+            </Contact>
+        </Organization>
+        <STUDY accession="SRP085561" alias="PRJNA341805" center_name="BioProject">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRP085561</PRIMARY_ID>
+                <EXTERNAL_ID label="primary" namespace="BioProject">PRJNA341805</EXTERNAL_ID>
+            </IDENTIFIERS>
+            <DESCRIPTOR>
+                <STUDY_TITLE>In-silico prediction and deep-DNA sequencing validation indicate phase variation in 115 Neisseria meningitidis genes</STUDY_TITLE>
+                <STUDY_TYPE existing_study_type="Other"/>
+                <STUDY_ABSTRACT>The goal of this study was to characterize the variable number of simple sequence repeats that are present in 20 distinct Neisseria meningitidis genomes. Deep sequencing data, generated for a subset of 5 of these genomes, were used to confirm the variability of the variable number simple sequence repeats identified by the 20-genomes comparative analysis.</STUDY_ABSTRACT>
+            </DESCRIPTOR>
+        </STUDY>
+        <SAMPLE accession="SRS1669092" alias="AE002098">
+            <IDENTIFIERS>
+                <PRIMARY_ID>SRS1669092</PRIMARY_ID>
+                <EXTERNAL_ID namespace="BioSample">SAMN02603997</EXTERNAL_ID>
+                <SUBMITTER_ID label="Sample name" namespace="cit|ajohnsto">AE002098</SUBMITTER_ID>
+            </IDENTIFIERS>
+            <SAMPLE_NAME>
+                <TAXON_ID>122586</TAXON_ID>
+                <SCIENTIFIC_NAME>Neisseria meningitidis MC58</SCIENTIFIC_NAME>
+            </SAMPLE_NAME>
+            <SAMPLE_LINKS>
+                <SAMPLE_LINK>
+                    <XREF_LINK>
+                        <DB>bioproject</DB>
+                        <ID>251</ID>
+                        <LABEL>PRJNA251</LABEL>
+                    </XREF_LINK>
+                </SAMPLE_LINK>
+            </SAMPLE_LINKS>
+            <SAMPLE_ATTRIBUTES>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>strain</TAG>
+                    <VALUE>MC58</VALUE>
+                </SAMPLE_ATTRIBUTE>
+                <SAMPLE_ATTRIBUTE>
+                    <TAG>serogroup</TAG>
+                    <VALUE>B</VALUE>
+                </SAMPLE_ATTRIBUTE>
+            </SAMPLE_ATTRIBUTES>
+        </SAMPLE>
+        <Pool>
+            <Member accession="SRS1669092" bases="1263875316" member_name="" organism="Neisseria meningitidis MC58" sample_name="AE002098" spots="9574813" tax_id="122586">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRS1669092</PRIMARY_ID>
+                    <EXTERNAL_ID namespace="BioSample">SAMN02603997</EXTERNAL_ID>
+                </IDENTIFIERS>
+            </Member>
+        </Pool>
+        <RUN_SET bases="1263875316" bytes="677950928" runs="1" spots="9574813">
+            <RUN accession="SRR4156085" alias="bwa_s_2.bam" assembly="ASM880v1" cluster_name="public" has_taxanalysis="1" is_public="true" load_done="true" published="2016-09-09 16:34:53" size="677950928" static_data_available="1" total_bases="1263875316" total_spots="9574813">
+                <IDENTIFIERS>
+                    <PRIMARY_ID>SRR4156085</PRIMARY_ID>
+                    <SUBMITTER_ID label="0" namespace="SUB1785042">bwa_s_2.bam</SUBMITTER_ID>
+                </IDENTIFIERS>
+                <EXPERIMENT_REF accession="SRX2130009">
+                    <IDENTIFIERS>
+                        <SUBMITTER_ID namespace="SUB1785042">MC58_GENOMIC_WGS_PAIRED_HiSEQ2000</SUBMITTER_ID>
+                    </IDENTIFIERS>
+                </EXPERIMENT_REF>
+                <Pool>
+                    <Member accession="SRS1669092" bases="1263875316" member_name="" organism="Neisseria meningitidis MC58" sample_name="AE002098" spots="9574813" tax_id="122586">
+                        <IDENTIFIERS>
+                            <PRIMARY_ID>SRS1669092</PRIMARY_ID>
+                            <EXTERNAL_ID namespace="BioSample">SAMN02603997</EXTERNAL_ID>
+                        </IDENTIFIERS>
+                    </Member>
+                </Pool>
+                <AlignInfo cnt="1" path="https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR4156085/SRR4156085">
+                    <Alignment gi="77358697" name="gi|77358697|ref|NC_003112.2|" seqid="NC_003112.2"/>
+                </AlignInfo>
+                <SRAFiles>
+                    <SRAFile cluster="public" date="2016-09-04 16:27:08" filename="SRR4156085" md5="870591191d7b1a62250b394ce6a1f1df" semantic_name="SRA Normalized" size="677959504" sratoolkit="1" supertype="Primary ETL" url="https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR4156085/SRR4156085" version="1">
+                        <Alternatives access_type="anonymous" free_egress="worldwide" org="AWS" url="https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR4156085/SRR4156085"/>
+                    </SRAFile>
+                    <SRAFile cluster="public" date="2020-04-08 13:47:02" filename="bwa_s_2.bam" md5="330f4ea5b317766ffcbe280ddf480bbf" semantic_name="bam" size="1553197918" sratoolkit="0" supertype="Original" version="1">
+                        <Alternatives access_type="Use Cloud Data Delivery" free_egress="-" org="AWS" url="s3://sra-pub-src-8/SRR4156085/bwa_s_2.bam"/>
+                    </SRAFile>
+                    <SRAFile cluster="public" date="2020-08-13 19:36:45" filename="SRR4156085.sralite" md5="c3f6f442527d409706a1e11825b9a021" semantic_name="SRA Lite" size="209529763" sratoolkit="1" supertype="Primary ETL" url="https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-14/SRR004/156/SRR4156085.sralite.1" version="1">
+                        <Alternatives access_type="anonymous" free_egress="worldwide" org="NCBI" url="https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-14/SRR004/156/SRR4156085.sralite.1"/>
+                        <Alternatives access_type="aws identity" free_egress="s3.us-east-1" org="AWS" url="s3://sra-pub-zq-6/SRR4156085/SRR4156085.sralite.1"/>
+                        <Alternatives access_type="gcp identity" free_egress="gs.us-east1" org="GCP" url="gs://sra-pub-zq-104/SRR4156085/SRR4156085.zq.1"/>
+                    </SRAFile>
+                </SRAFiles>
+                <CloudFiles>
+                    <CloudFile filetype="bam" location="s3.us-east-1" provider="s3"/>
+                    <CloudFile filetype="run" location="s3.us-east-1" provider="s3"/>
+                    <CloudFile filetype="run.zq" location="gs.us-east1" provider="gs"/>
+                    <CloudFile filetype="run.zq" location="s3.us-east-1" provider="s3"/>
+                </CloudFiles>
+                <Statistics nreads="2" nspots="9574813">
+                    <Read average="66" count="9574813" index="0" stdev="0"/>
+                    <Read average="66" count="9574813" index="1" stdev="0"/>
+                </Statistics>
+                <Databases>
+                    <Database>
+                        <Table name="PRIMARY_ALIGNMENT">
+                            <Statistics source="meta">
+                                <Rows count="18573903"/>
+                                <Elements count="1225877598"/>
+                            </Statistics>
+                        </Table>
+                        <Table name="REFERENCE">
+                            <Statistics source="meta">
+                                <Rows count="455"/>
+                                <Elements count="2272360"/>
+                            </Statistics>
+                        </Table>
+                        <Table name="SEQUENCE">
+                            <Statistics source="meta">
+                                <Rows count="9574813"/>
+                                <Elements count="1263875316"/>
+                            </Statistics>
+                        </Table>
+                    </Database>
+                </Databases>
+                <Bases count="1263875316" cs_native="false">
+                    <Base count="307908138" value="A"/>
+                    <Base count="321280093" value="C"/>
+                    <Base count="326709948" value="G"/>
+                    <Base count="306661409" value="T"/>
+                    <Base count="1315728" value="N"/>
+                </Bases>
+            </RUN>
+        </RUN_SET>
+    </EXPERIMENT_PACKAGE>
+ </RAW_DATA>

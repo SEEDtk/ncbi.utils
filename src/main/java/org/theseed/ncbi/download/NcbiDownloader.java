@@ -202,7 +202,7 @@ public class NcbiDownloader implements AutoCloseable {
      */
     public void execute() {
         this.summaryString = "Download of sample " + this.sample.getId() + " in progress.";
-        log.info("Downloading sample {}.", this.sample.getId());
+        log.info("Expecting {} spots in sample {}.", this.sample.getSpots(), this.sample.getId());
         Set<String> runs = this.sample.getRuns();
         for (String run : runs) {
             this.runCount++;

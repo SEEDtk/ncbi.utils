@@ -80,4 +80,10 @@ public class SingleReadSample extends ReadSample {
             this.outStream.close();
     }
 
+    @Override
+    public String toString() {
+        return this.getId() + "(" + this.getRuns().size() + " runs, single-stream)";
+    }
+
+
 }

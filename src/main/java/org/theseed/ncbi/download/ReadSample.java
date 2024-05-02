@@ -13,6 +13,8 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.zip.GZIPOutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.theseed.ncbi.TagNotFoundException;
 import org.theseed.ncbi.XmlUtils;
 import org.theseed.reports.NaturalSort;
@@ -28,6 +30,9 @@ import org.w3c.dom.Element;
 public abstract class ReadSample {
 
     // FIELDS
+    /** logging facility */
+    protected static Logger log = LoggerFactory.getLogger(ReadSample.class);
+
     /** ID of this sample */
     private String sampleId;
     /** list of run IDs */
@@ -89,6 +94,20 @@ public abstract class ReadSample {
     }
 
     /**
+     * Find the run ID in an experiment package descriptor.
+     *
+     * @param expElement	experiment-package document returned by NCBI
+     *
+     * @return the sample accession string
+     *
+     * @throws TagNotFoundException
+     */
+    public static String getRunId(Element expElement) throws TagNotFoundException {
+        Element runTag = XmlUtils.getFirstByTagName(expElement, "RUN");
+        return runTag.getAttribute("accession");
+    }
+
+    /**
      * Process the header record for a FASTQ read.
      *
      * @param header	header record to parse
@@ -106,7 +125,7 @@ public abstract class ReadSample {
      *
      * @throws TagNotFoundException
      */
-    private void addRuns(Element expElement) throws TagNotFoundException {
+    public void addRuns(Element expElement) throws TagNotFoundException {
         // Get all the runs.
         Element runSetTag = XmlUtils.getFirstByTagName(expElement, "RUN_SET");
         List<Element> runTags = XmlUtils.descendantsOf(runSetTag, "RUN");
@@ -114,7 +133,7 @@ public abstract class ReadSample {
         for (Element run : runTags) {
             // Get the run ID and size.
             String runId = run.getAttribute("accession");
-            int runSpots = Integer.valueOf(run.getAttribute("spots"));
+            int runSpots = Integer.valueOf(run.getAttribute("total_spots"));
             // Try to add the run.  If it's new, update the spot count.
             boolean newRun = this.runs.add(runId);
             if (newRun)
