@@ -13,6 +13,13 @@ import org.theseed.basic.BaseProcessor;
  */
 public class App
 {
+    /** static array containing command names and comments */
+    protected static final String[] COMMANDS = new String[] {
+             "query", "retrieve data from the NCBI Entrez database",
+             "list", "list records from the NCBI Entrez database",
+             "fetch", "download samples from NCBI",
+    };
+
     public static void main( String[] args )
     {
         // Get the control parameter.
@@ -30,13 +37,20 @@ public class App
         case "fetch" :
             processor = new NcbiFetchProcessor();
             break;
-        default:
-            throw new RuntimeException("Invalid command " + command);
+        case "-h" :
+        case "--help" :
+            processor = null;
+            break;
+        default :
+            throw new RuntimeException("Invalid command " + command + ".");
         }
-        // Process it.
-        boolean ok = processor.parseCommand(newArgs);
-        if (ok) {
-            processor.run();
+        if (processor == null)
+            BaseProcessor.showCommands(COMMANDS);
+        else {
+            boolean ok = processor.parseCommand(newArgs);
+            if (ok) {
+                processor.run();
+            }
         }
     }
 }
