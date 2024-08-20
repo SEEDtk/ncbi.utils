@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ForkJoinPool;
 
 import org.apache.commons.io.FileUtils;
 import org.kohsuke.args4j.Argument;
@@ -51,6 +52,7 @@ import org.w3c.dom.Element;
  * --missing	only download samples not already present
  * --sampCol	index (1-based) or name of the input column containing sample and run IDs (default "sample_id")
  * --zip		GZIP the output to save space
+ * --para		maximum number of parallel threads to use during cleaning
  *
  * @author Bruce Parrello
  *
@@ -76,6 +78,8 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
     private NcbiConnection ncbi;
     /** list query for processing accession identifiers */
     private NcbiListQuery query;
+    /** custom thread pool for parallel processing */
+    private ForkJoinPool threadPool;
 
     // COMMAND-LINE OPTIONS
 
@@ -98,6 +102,10 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
     /** batch size for NCBI queries */
     @Option(name = "--batchSize", aliases = { "-b" }, metaVar = "50", usage = "batch size for NCBI queries")
     private int batchSize;
+
+    /** if specified, parallel processing will be used */
+    @Option(name = "--para", usage = "number of threads to use during cleaning phase")
+    private int maxThreads;
 
     /** name of the output directory */
     @Argument(index = 0, metaVar = "outDir", usage = "output directory name", required = true)
@@ -137,6 +145,7 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
         this.sampCol = "sample_id";
         this.zipFlag = false;
         this.batchSize = 100;
+        this.maxThreads = 10;
     }
 
     @Override
@@ -166,6 +175,13 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
         // Connect to the NCBI.
         this.ncbi = new NcbiConnection();
         this.query = new NcbiListQuery(NcbiTable.SRA, "ACCN");
+        // Create the custom thread pool.
+        if (this.maxThreads == 1)
+            this.threadPool = null;
+        else {
+            this.threadPool = new ForkJoinPool(this.maxThreads);
+            log.info("Parallel processing selected with {} threads.", this.maxThreads);
+        }
     }
 
     @Override
@@ -201,7 +217,17 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
         // Ask the NCBI for information about the runs.
         this.analyzeAccessions(this.runs, AccessionType.RUN);
         log.info("{} samples and runs found in input.", this.sampleMap.size());
-        // Loop through the samples, processing them one at a time.
+        // Loop through the samples, processing them.
+        if (this.threadPool == null)
+            this.sampleMap.values().stream().forEach(x -> this.processSample(x));
+        else try {
+            // Here we use a parallel stream.
+            this.threadPool.submit(() ->
+                    this.sampleMap.values().parallelStream().forEach(x -> this.processSample(x))).get();
+        } finally {
+            this.threadPool.shutdown();
+        }
+
         this.sampleMap.values().forEach(x -> this.processSample(x));
         log.info("{} samples downloaded, {} failed, {} skipped.", this.downloadCount, this.failCount, this.skipCount);
     }
@@ -274,7 +300,9 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
             File markerFile = new File(sampleDir, "summary.txt");
             if (this.missingFlag && markerFile.exists()) {
                 log.info("Skipping downloaded sample {}.", sample.getId());
-                this.skipCount++;
+                synchronized(this) {
+                    this.skipCount++;
+                }
             } else {
                 log.info("Downloading sample #{}: {}.", this.downloadCount+1, sample.getId());
                 // Insure the output directory exists.
@@ -285,12 +313,16 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
                     downloader.execute();
                     // Mark it complete.
                     MarkerFile.write(markerFile, downloader.summaryString());
-                    this.downloadCount++;
+                    synchronized(this) {
+                        this.downloadCount++;
+                    }
                 }
             }
         } catch (Exception e) {
             log.error("Sample {} failed during download: {}.", sample.getId(), e.toString());
-            this.failCount++;
+            synchronized(this) {
+                this.failCount++;
+            }
         }
     }
 
