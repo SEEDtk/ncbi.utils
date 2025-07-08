@@ -37,9 +37,9 @@ import org.w3c.dom.Element;
  * output to a subdirectory bearing the sample name.
  *
  * A sample consists of one or more runs.  The input file should be tab-delimited with headers, and
- * come in on the standard input.  One column should contain sample IDs and another the run IDs
- * separated by commas.  If the samples are in fast single-run samples, both columns can be the same,
- * and the sample ID is also the run ID.
+ * come in on the standard input.  The input column should contain sample and/or run IDs. If a sample
+ * ID is specified, its run list will be retrieved from NCBI and all the runs downloaded. Otherwise,
+ * the run will be downloaded directly.
  *
  * The positional parameter is the name of the output directory.  The command-line options are as follows.
  *

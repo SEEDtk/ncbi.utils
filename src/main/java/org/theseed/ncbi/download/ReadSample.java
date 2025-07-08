@@ -13,6 +13,7 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theseed.ncbi.TagNotFoundException;
@@ -139,7 +140,14 @@ public abstract class ReadSample {
         for (Element run : runTags) {
             // Get the run ID and size.
             String runId = run.getAttribute("accession");
-            int runSpots = Integer.valueOf(run.getAttribute("total_spots"));
+            String spotCount = run.getAttribute("total_spots");
+            int runSpots;
+            if (StringUtils.isBlank(spotCount)) {
+                // Here the spot count is missing in the NCBI data. We punt and assume zero.
+                runSpots = 0;
+                log.warn("Run {} has no spot count.", runId);
+            } else
+                runSpots = Integer.valueOf(spotCount);
             // Try to add the run.  If it's new, update the spot count.
             boolean newRun = this.runs.add(runId);
             if (newRun)
