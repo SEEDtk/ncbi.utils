@@ -32,7 +32,7 @@ public abstract class ReadSample {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(ReadSample.class);
+    private static final Logger log = LoggerFactory.getLogger(ReadSample.class);
     /** title of this sample */
     private String title;
     /** ID of this sample */

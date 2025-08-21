@@ -12,6 +12,8 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.theseed.basic.ParseFailureException;
 import org.theseed.io.TabbedLineReader;
 import org.theseed.ncbi.NcbiListQuery;
@@ -44,6 +46,8 @@ import org.theseed.ncbi.XmlException;
 public class NcbiListProcessor extends BaseNcbiProcessor {
 
     // FIELDS
+    /** logging facility */
+    private static final Logger log = LoggerFactory.getLogger(NcbiListProcessor.class);
     /** input stream */
     private Iterator<String> keyIter;
     /** total number of keys found in input */
@@ -83,7 +87,7 @@ public class NcbiListProcessor extends BaseNcbiProcessor {
                 inStream = new TabbedLineReader(this.inFile);
             }
             // Get the key column values.
-            Set<String> keys = new TreeSet<String>();
+            Set<String> keys = new TreeSet<>();
             int keyIdx = inStream.findField(this.colName);
             for (TabbedLineReader.Line line : inStream) {
                 String key = line.get(keyIdx);

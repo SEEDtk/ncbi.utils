@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.theseed.basic.ParseFailureException;
 import org.theseed.io.MarkerFile;
 import org.theseed.ncbi.NcbiConnection;
@@ -59,6 +61,9 @@ import org.theseed.ncbi.XmlException;
  */
 public class NcbiQueryProcessor extends BaseNcbiProcessor  {
 
+    // FIELDS
+    /** logging facility */
+    private static final Logger log = LoggerFactory.getLogger(NcbiQueryProcessor.class);
     /** query to run */
     private NcbiFilterQuery query;
     /** regex pattern for valid dates */
@@ -127,14 +132,13 @@ public class NcbiQueryProcessor extends BaseNcbiProcessor  {
                 // We have to do a funny sort of parsing here, because we allow specifying just the
                 // year or just the year and the month.
                 String[] parts = StringUtils.split(this.minDateString, '-');
-                int year = 0;
                 int month = 1;
                 int day = 1;
                 if (parts.length > 2)
-                    day = Integer.valueOf(parts[2]);
+                    day = Integer.parseInt(parts[2]);
                 if (parts.length > 1)
-                    month = Integer.valueOf(parts[1]);
-                year = Integer.valueOf(parts[0]);
+                    month = Integer.parseInt(parts[1]);
+                int year = Integer.parseInt(parts[0]);
                 LocalDate minDate = LocalDate.of(year, month, day);
                 this.query.since(dateType, minDate);
             } else if (this.minDateFile != null && this.minDateFile.exists()) {

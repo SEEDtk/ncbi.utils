@@ -61,7 +61,7 @@ public class NcbiFetchProcessor extends BaseInputProcessor {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(NcbiFetchProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(NcbiFetchProcessor.class);
     /** master sample list (sample ID -> sample descriptor */
     private Map<String, ReadSample> sampleMap;
     /** input list of samples */

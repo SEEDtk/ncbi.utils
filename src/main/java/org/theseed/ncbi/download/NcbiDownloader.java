@@ -36,7 +36,7 @@ public class NcbiDownloader implements AutoCloseable {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(NcbiDownloader.class);
+    private static final Logger log = LoggerFactory.getLogger(NcbiDownloader.class);
     /** descriptor for sample to download */
     private ReadSample sample;
     /** number of errors */

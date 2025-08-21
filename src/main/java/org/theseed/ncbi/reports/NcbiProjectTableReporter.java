@@ -26,7 +26,7 @@ public class NcbiProjectTableReporter extends NcbiTableReporter {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(NcbiProjectReporter.class);
+    private static final Logger log = LoggerFactory.getLogger(NcbiProjectReporter.class);
 
     /** heading array */
     private static final String[] HEADINGS = new String[] {

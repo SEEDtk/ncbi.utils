@@ -15,8 +15,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theseed.ncbi.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,8 +28,6 @@ import org.w3c.dom.Element;
 public class NcbiRawReporter extends NcbiTableReporter {
 
     // FIELDS
-    /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(NcbiRawReporter.class);
     /** factory for transforming XML documents */
     private TransformerFactory xfactory;
     /** xml document being built */

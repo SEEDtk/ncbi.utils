@@ -31,7 +31,7 @@ public class NcbiProjectReporter extends NcbiTableReporter {
 
     // FIELDS
     /** logging facility */
-    protected static Logger log = LoggerFactory.getLogger(NcbiProjectReporter.class);
+    private static final Logger log = LoggerFactory.getLogger(NcbiProjectReporter.class);
     /** map of projects to output maps */
     private Map<String, Map<String, String>> projectMap;
 
