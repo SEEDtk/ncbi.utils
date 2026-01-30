@@ -32,7 +32,7 @@ public abstract class NcbiTableReporter {
     /** output writer */
     private PrintWriter writer;
     /** target NCBI table */
-    private NcbiTable table;
+    private final NcbiTable table;
     /** list of keywords to find, coded as regular expressions */
     private List<Pattern> keywords;
     /** minimum number of keyword matches required */
@@ -138,7 +138,7 @@ public abstract class NcbiTableReporter {
     protected void setupKeywordFiltering(IParms processor) throws ParseFailureException {
         // Create the list of patterns from the pattern strings.
         List<String> regexStrings = processor.getPatterns();
-        this.keywords = new ArrayList<Pattern>(regexStrings.size());
+        this.keywords = new ArrayList<>(regexStrings.size());
         for (String regexString : regexStrings) {
             try {
                 Pattern pattern = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
@@ -349,7 +349,7 @@ public abstract class NcbiTableReporter {
      * @return the text with the HTML tags removed
      */
     public static String cleanHtml(String text) {
-        String retVal = RegExUtils.removeAll(text, HTML_TAG);
+        String retVal = RegExUtils.removeAll((CharSequence) text, HTML_TAG);
         return retVal;
     }
 
